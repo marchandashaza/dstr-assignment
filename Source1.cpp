@@ -98,5 +98,3 @@ void InsertToTheFrontOfList(string EmpID, string EmpName, double EmpSal)
 		newnode->NextAdd = head; //big o notation = O(1)
 		head = newnode;
 	}
-}
-//edit
