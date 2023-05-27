@@ -39,8 +39,8 @@ class Favorite{
         }
 
         void addToFavorite(string name, string institution){
-            Favorite* newnode = new Favorite(name, institution);
-            favDLL.insertEnd(newnode);
+            Favorite* newNode = new Favorite(name, institution);
+            favDLL.InsertEnd(newNode);
         }
 
         void addToFile(){
@@ -50,7 +50,7 @@ class Favorite{
                 while (current != NULL)
                 {
                     cout << "Name: " << current->name << endl;
-                    cout << "Favourited Institutions: " current->institution <<endl;
+                    cout << "Favourited Institutions: " << current->institution <<endl;
 
                     file << current -> name << ',';
                     file << current -> institution << endl;
@@ -64,7 +64,48 @@ class Favorite{
 
 class Feedback
 {
-    //
+    public:
+    string FbId;
+    string username;
+    string institution;
+    string feedback;
+    string fbdate;
+    string fbreply;
+    string fbreply_date;
+    Feedback* nextAdd;
+    Feedback* prevAdd;
+    DoubleLinkedList<Feedback> fbDLL;
+
+    Feedback()
+    {
+        this->FbId = "";
+        this->username = "";
+        this->institution = "";
+        this->feedback = "";
+        this->fbdate = "";
+        this->nextAdd = NULL;
+        this->prevAdd = NULL;
+        this->fbreply = "";
+        this->fbreply_date = "";
+    }
+
+    Feedback(string FbId, string username, string institution, string feedback, string fbdate, string fbreply, string fbreply_date)
+    {
+        this->FbId = FbId;
+        this->username = username;
+        this->institution = institution;
+        this->feedback = feedback;
+        this->fbdate = fbdate;
+        this->nextAdd = NULL;
+        this->prevAdd = NULL;
+        this->fbreply = "N/A";
+        this->fbreply_date = "N/A";
+    }
+
+    string generateid()
+    {
+        //
+    }
 };
 
 class University 
@@ -152,7 +193,7 @@ public:
 		this->nextAdd = NULL;
 		this->prevAdd = NULL;
 	}
-    void insertToEndList(string rank, string institution, string LocationCode, string Location, string ArScore, string ArRank,
+    void InsertToEndList(string rank, string institution, string LocationCode, string Location, string ArScore, string ArRank,
 		string ErScore, string ErRank, string FsrScore, string FsrRank, string CpfScore, string CpfRank, string IfrScore, string IfrRank, string IsrScore,
 		string IsrRank, string IrnSCore, string IrnRank, string GerScore, string GerRank, string ScoreScaled);
     void Binary_Search();
@@ -164,6 +205,163 @@ public:
     bool compareAttributes();
 
 };
+
+void University :: InsertToEndList(string rank, string institution, string LocationCode, string Location, string ArScore, string ArRank,
+		string ErScore, string ErRank, string FsrScore, string FsrRank, string CpfScore, string CpfRank, string IfrScore, string IfrRank, 
+        string IsrScore, string IsrRank, string IrnScore, string IrnRank, string GerScore, string GerRank, string ScoreScaled)
+{
+    int new_rank, new_ArRank, new_ErRank, new_FsrRank, new_CpfRank, new_IfrRank, new_IsrRank, new_IrnRank, new_GerRank;
+    double new_ArScore, new_ErScore, new_FsrScore, new_CpfScore, new_IfrScore, new_IsrScore, new_IrnScore, new_GerScore, new_ScoreScaled;
+    try
+    {
+        new_rank = stoi(rank);
+    }
+    catch(...)
+    {
+        new_rank = -1;
+    }
+    try
+    {
+        new_ArRank = stoi(ArRank);
+    }
+    catch(...)
+    {
+        new_ArRank = -1;
+    }
+    try
+    {
+        new_ErRank = stoi(ErRank);
+    }
+    catch(...)
+    {
+        new_ErRank = -1;
+    }
+    try
+    {
+        new_FsrRank = stoi(FsrRank);
+    }
+    catch(...)
+    {
+        new_FsrRank = -1;
+    }
+    try
+    {
+        new_CpfRank = stoi(CpfRank);
+    }
+    catch(...)
+    {
+        new_CpfRank = -1;
+    }
+    try
+    {
+        new_IfrRank = stoi(IfrRank);
+    }
+    catch(...)
+    {
+        new_IfrRank = -1;
+    }
+    try
+    {
+        new_IsrRank = stoi(IsrRank);
+    }
+    catch(...)
+    {
+        new_IsrRank = -1;
+    }
+    try
+    {
+        new_IrnRank = stoi(IrnRank);
+    }
+    catch(...)
+    {
+        new_IrnRank = -1;
+    }
+    try
+    {
+        new_GerRank = stoi(GerRank);
+    }
+    catch(...)
+    {
+        new_GerRank = -1;
+    }
+    try
+    {
+        new_ArScore = stod(ArScore);
+    }
+    catch(...)
+    {
+        new_ArScore = -1;
+    }
+    try
+    {
+        new_ErScore = stod(ErScore);
+    }
+    catch(...)
+    {
+        new_ErScore = -1;
+    }
+    try
+    {
+        new_FsrScore = stod(FsrScore);
+    }
+    catch(...)
+    {
+        new_FsrScore = -1;
+    }
+    try
+    {
+        new_CpfScore = stod(CpfScore);
+    }
+    catch(...)
+    {
+        new_CpfScore = -1;
+    }
+    try
+    {
+        new_IfrScore = stod(IfrScore);
+    }
+    catch(...)
+    {
+        new_IfrScore = -1;
+    }
+    try
+    {
+        new_IsrScore = stod(IsrScore);
+    }
+    catch(...)
+    {
+        new_IsrScore = -1;
+    }
+    try
+    {
+        new_IrnScore = stod(IrnScore);
+    }
+    catch(...)
+    {
+        new_IrnScore = -1;
+    }
+    try
+    {
+        new_GerScore = stod(GerScore);
+    }
+    catch(...)
+    {
+        new_GerScore = -1;
+    }
+    try
+    {
+        new_ScoreScaled = stod(ScoreScaled);
+    }
+    catch(...)
+    {
+        new_ScoreScaled = -1;
+    }
+    
+    University* newNode = new University(new_rank, institution, LocationCode, Location, new_ArScore, new_ArRank, new_ErScore,
+		new_ErRank, new_FsrScore, new_FsrRank, new_CpfScore, new_CpfRank, new_IfrScore, new_IfrRank, new_IsrScore,
+		new_IsrRank, new_IrnScore, new_IrnRank, new_GerScore, new_GerRank, new_ScoreScaled);
+        univDLL.InsertEnd(newNode);
+}
 
 void University :: Binary_Search()
 {
@@ -223,6 +421,11 @@ void University :: display_univinfo()
 
 class User{
 
+private:
+
+	string username;
+	string password;
+
 public:
 	
 	void static UserMainMenu() {
@@ -248,6 +451,7 @@ public:
 			case 2:
 				void Login();
 				break;
+
 			case 3:
 				void ViewUniversities();
 				break;
@@ -270,6 +474,70 @@ public:
 		}
 
 	}
+
+	void static SignUp() {
+
+		string UserUsername, UserPassword;
+
+
+		cout << "Welcome Future Member!" << endl;
+		cout << "Please Enter Your Desired Username: " << endl;
+		cin >> UserUsername;
+		cout << "Please Enter Your Desired Password: " << endl;
+		cin >> UserPassword;
+
+		ofstream file("userdata.csv", ios::app);
+		if (file.is_open()) {
+
+			file << UserUsername << "," << UserPassword << "\n";
+			file.close();
+			cout << "The Sign Up is Successful, Welcome New Member!" << endl;
+
+		}
+
+		else {
+			cerr << "The Sign Up Process is Unsuccessful, Please Try Again!" << endl;
+
+		}
+
+	}
+
+	void static Login() {
+
+		string UsernameEntered, PasswordEntered;
+		cout << "Welcome to the Login Menu! Please Enter Your Credentials!" << endl;
+		cout << "Please Enter Your Username: ";
+		cin >> UsernameEntered;
+		cout << "Please Enter Your Password: ";
+		cin >> PasswordEntered;
+
+		ifstream file("userdata.csv");
+		if (file.is_open()) {
+			string line;
+			while (getline(file, line)) {
+				stringstream ss(line);
+				string Username, Password;
+				getline(ss, Username, ',');
+				getline(ss, Password, ',');
+
+				if (UsernameEntered == Username && PasswordEntered == Password) {
+					file.close();
+					return;
+				}
+
+			}
+			file.close();
+
+		}
+        // else if ()
+		else {
+			cerr << "Login Failed!Please Re-Enter the Credentials!" << endl;
+		}
+
+		return;
+
+	}
+
 };
 
 
@@ -386,64 +654,64 @@ private:
     }
 };
 
-class userData {
+// class userData {
 
-    userData * head; userData * tail;
+//     userData * head; userData * tail;
 
-public:
-    string username;
-    string password; 
-	userData* nextAdd;
-	userData* prevAdd;
-	SingleLinkedList<userData> univSLL;
-	DoubleLinkedList<userData> univDLL;
+// public:
+//     string username;
+//     string password; 
+// 	userData* nextAdd;
+// 	userData* prevAdd;
+// 	SingleLinkedList<userData> univSLL;
+// 	DoubleLinkedList<userData> univDLL;
 
-    userData(string username, string password) 
-    {
-		this->username = username;
-        this->password = password;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userData() 
-    {
-		this->username = NULL;
-		this->password = NULL;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string username, string password);
-};
+//     userData(string username, string password) 
+//     {
+// 		this->username = username;
+//         this->password = password;
+// 		this->nextAdd = NULL;
+// 		this->prevAdd = NULL;
+// 	}
+//     userData() 
+//     {
+// 		this->username = NULL;
+// 		this->password = NULL;
+// 		this->nextAdd = NULL;
+// 		this->prevAdd = NULL;
+// 	}
+//     void insertToEndList(string username, string password);
+// };
 
-class userFav {
+// class userFav {
     
-    userFav * head; userFav * tail;
+//     userFav * head; userFav * tail;
 
-public:
-    string name;
-    string institution; 
-	userFav* nextAdd;
-	userFav* prevAdd;
-	SingleLinkedList<userFav> univSLL;
-	DoubleLinkedList<userFav> univDLL;
+// public:
+//     string name;
+//     string institution; 
+// 	userFav* nextAdd;
+// 	userFav* prevAdd;
+// 	SingleLinkedList<userFav> univSLL;
+// 	DoubleLinkedList<userFav> univDLL;
 
-    userFav(string name, string institution) 
-    {
-		this->name = name;
-        this->institution = institution;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userFav() 
-    {
-		this->name = NULL;
-		this->institution = NULL;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string name, string institution);
-    }
-};
+//     userFav(string name, string institution) 
+//     {
+// 		this->name = name;
+//         this->institution = institution;
+// 		this->nextAdd = NULL;
+// 		this->prevAdd = NULL;
+// 	}
+//     userFav() 
+//     {
+// 		this->name = NULL;
+// 		this->institution = NULL;
+// 		this->nextAdd = NULL;
+// 		this->prevAdd = NULL;
+// 	}
+//     void insertToEndList(string name, string institution);
+
+// };
 
 
 
@@ -485,22 +753,22 @@ public:
                     break;             
             }
         }
-        while (opt != 4);
+        while (choice != 4);
 
         
     }; 
-    Admin* login(string ID, string password) {
-        // Admin * current = adminDLL.head;
-        while (current != NULL) {
-            if (ID == current -> ID && password) {
-                cout << "Welcome " << current-> name << endl;
-                return current;
-            }
-            cout << "Invalid credentials" << endl;
-            return NULL;
-        }
+    // Admin* login(string ID, string password) {
+    //     // Admin * current = adminDLL.head;
+    //     while (current != NULL) {
+    //         if (ID == current -> ID && password) {
+    //             cout << "Welcome " << current-> name << endl;
+    //             return current;
+    //         }
+    //         cout << "Invalid credentials" << endl;
+    //         return NULL;
+    //     }
                                         
-    }
+    // }
 
 };
 
@@ -540,12 +808,13 @@ int main()
         {
             break;
         }
-        InsertToTheFrontOfList(stoi(rank), institution, locationCode, location, stod(arScore), stoi(arRank), stod(erScore), stoi(erRank), stod(fsrScore), stoi(fsrRank), stod(cpfScore), stoi(cpfRank), stod(ifrScore), stoi(ifrRank), stod(isrScore), stoi(isrRank), stod(gerScore), stoi(gerRank), stod(scoreScaled));
+        InsertToTheFrontOfList(stoi(rank), institution, locationCode, location, stod(arScore), stoi(arRank), stod(erScore), stoi(erRank), stod(fsrScore), 
+        stoi(fsrRank), stod(cpfScore), stoi(cpfRank), stod(ifrScore), stoi(ifrRank), stod(isrScore), stoi(isrRank), stod(gerScore), stoi(gerRank), stod(scoreScaled));
     }
 
 
     cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
-    display_univinfo();
+    void display_univinfo();
     cout << endl;
     return 0;
 
