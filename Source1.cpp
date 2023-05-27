@@ -8,6 +8,52 @@
 using namespace std;
 
 
+class Favorite{
+    public:
+        string name;
+        string institution;
+        Favorite*nextAdd;
+        Favorite*prevAdd;
+        DoubleLinkedList<Favorite>favDLL;
+
+        Favorite(string name, string institution) {
+            this -> name = name;
+            this -> institution = institution;
+            this -> nextAdd = NULL;
+            this -> prevAdd = NULL;
+        }
+
+        Favorite(){
+            this -> name = "";
+            this -> institution = "";
+            this -> nextAdd = NULL;
+            this -> prevAdd = NULL;
+        }
+
+        void addToFavorite(string name, string institution){
+            Favorite* newnode = new Favorite(name, institution);
+            favDLL.insertEnd(newnode);
+        }
+
+        void addToFile(){
+            ofstream file("favorite.csv",std::ios::app);
+            if (file.is_open()){
+                Favorite*current = favDLL.tail;
+                while (current != NULL)
+                {
+                    cout << "Name: " << current->name << endl;
+                    cout << "Favourited Institutions: " current->institution <<endl;
+
+                    file << current -> name << ',';
+                    file << current -> institution << endl;
+
+                    current = current -> nextAdd;
+                }
+                cout << "End of favourited institutions" << endl;
+            }
+        }
+};
+
 class University 
 {
     University * head; University * tail;
