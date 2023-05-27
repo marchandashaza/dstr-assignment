@@ -442,7 +442,7 @@ public:
                                         
     }
 
-}
+};
 
 int main()
 {
