@@ -1,5 +1,12 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 #include "SingleLinkedList.h"
 #include "DoubleLinkedList.h"
+#pragma once
+using namespace std;
+
 
 class University 
 {
