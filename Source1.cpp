@@ -413,8 +413,6 @@ public:
 		this->prevAdd = NULL;
 	}
     void insertToEndList(string username, string password);
-    }
-
 };
 
 class userFav {
