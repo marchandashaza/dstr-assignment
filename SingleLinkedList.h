@@ -1,26 +1,15 @@
 #include <iostream>
 
 // Node class represents a single node in the linked list
-class Node {
-public:
-    int data;
-    Node* next;
-
-    // Constructor
-    Node(int value) {
-        data = value;
-        next = nullptr;
-    }
-};
-
+template <class Node>
 // LinkedList class represents the singly linked list
-class LinkedList {
+class SingleLinkedList {
 private:
     Node* head;
 
 public:
     // Constructor
-    LinkedList() {
+    SingleLinkedList() {
         head = nullptr;
     }
 

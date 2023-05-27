@@ -1,3 +1,6 @@
+#include "SingleLinkedList.h"
+#include "DoubleLinkedList.h"
+
 class University 
 {
     University * head; University * tail;
@@ -26,7 +29,7 @@ public:
 	double ScoreScaled;
 	University* nextAdd;
 	University* prevAdd;
-	SingleLinkedList<University> univDLL;
+	SingleLinkedList<University> univSLL;
 	DoubleLinkedList<University> univDLL;
 
     University(int rank, string institution, string LocationCode, string Location, double ArScore, int ArRank,
@@ -89,15 +92,246 @@ public:
 };
 
 
+class RegisteredUser {
+public:
+    void displayMenu() {
+        int choice;
+        do {
+            std::cout << "=== Main Menu ===" << std::endl;
+            std::cout << "1. Login" << std::endl;
+            std::cout << "2. Display University Academic Ranking" << std::endl;
+            std::cout << "3. Display University Faculty and Student Ratio Score" << std::endl;
+            std::cout << "4. Display University Employee Reputation Score" << std::endl;
+            std::cout << "5. Search University" << std::endl;
+            std::cout << "6. Logout" << std::endl;
+            std::cout << "7. Exit" << std::endl;
+            std::cout << "Enter your choice: ";
+            std::cin >> choice;
+
+            switch (choice) {
+            case 1:
+                option1();
+                break;
+            case 2:
+                option2();
+                break;
+            case 3:
+                option3();
+                break;
+            case 4:
+                option4();
+                break;
+            case 5:
+                option5();
+                break;
+            case 6:
+                option6();
+                break;
+            case 7:
+                std::cout << "Exiting..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+            }
+        } while (choice != 4);
+    }
+
+private:
+    // Function to check login credentials
+    void login() {
+        std::string username, password;
+
+        std::cout << "=== Login ===" << std::endl;
+        std::cout << "Username: ";
+        std::cin >> username;
+        std::cout << "Password: ";
+        std::cin >> password;
+
+        if (validateCredentials(username, password)) {
+            std::cout << "Login successful!" << std::endl;
+            // Perform additional actions after successful login
+        }
+        else {
+            std::cout << "Invalid username or password." << std::endl;
+        }
+    }
+
+    bool validateCredentials(const std::string& username, const std::string& password) {
+        std::ifstream file("credentials.csv");
+        if (!file) {
+            std::cout << "Error opening file." << std::endl;
+            return false;
+        }
+
+        std::string line;
+        while (std::getline(file, line)) {
+            std::vector<std::string> tokens = split(line, ',');
+            if (tokens.size() >= 2 && tokens[0] == username && tokens[1] == password) {
+                file.close();
+                return true;
+            }
+        }
+
+        file.close();
+        return false;
+    }
+
+    void option1() {
+        
+    }
+    void option2() {
+        std::cout << "Option 2 selected." << std::endl;
+        // Add your logic for Option 2 here
+    }
+
+    void option3() {
+        std::cout << "Option 3 selected." << std::endl;
+        // Add your logic for Option 3 here
+    }
+
+    void option4() {
+        std::cout << "Option 4 selected." << std::endl;
+        // Add your logic for Option 3 here
+    }
+
+    void option5() {
+        std::cout << "Option 5 selected." << std::endl;
+        // Add your logic for Option 3 here
+    }
+
+    void option6() {
+        std::cout << "Option 6 selected." << std::endl;
+        // Add your logic for Option 3 here
+    }
+};
+
+class User{
+
+public:
+	
+	void static UserMainMenu() {
+		int Menu;
+		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
+		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
+		cout << "\n ===========================================================" << endl;
+		cout << "\n 1. Sign Up" << endl;
+		cout << "\n 2. Log In" << endl;
+		cout << "\n 3. View Universities" << endl;
+		cout << "\n 4. Search University" << endl;
+		cout << "\n 5. Sort Universities" << endl;
+		cout << "\n 6. Exit" << endl;
+		cout << "\n Please Input your Selection (1-5):  " << endl;
+		cin >> Menu;
 
 
+		switch(Menu) {
+			case 1:
+				void SignUp();
+				break;
 
+			case 2:
+				void Login();
+				break;
+			case 3:
+				void ViewUniversities();
+				break;
 
+			case 4:
+				void SearchUniversity();
+				break;
 
+			case 5:
+				void SortUniversities();
+				break;
+
+			case 6:
+				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
+				return;
+
+			default:
+				cout << "The Selection is Invalid, Please Select other Options" << endl;
+
+		}
+
+	}
+};
+
+class Admin
+{
+public:
+    Admin * nextadd;
+    Admin * prevadd;
+    Admin (){
+        this -> name = "";
+        this -> password = "";
+        this -> ID = "";
+        this -> nextadd = NULL;
+        this -> prevadd = NULL;
+    } 
+    Admin(string name, string password, string ID) {
+        this-> name = name;
+        this-> password = password;
+        this-> ID = ID;
+        this -> nextadd = NULL;
+        this -> prevadd = NULL;
+    };        
+    ~Admin() {};
+    void adminmenu() {
+        int choice;
+        do
+        {
+            cout << "University Ranking System\n" << endl;
+            cout << "What would you like to do? \n\n" << endl;
+            cout << "==========================================\n" << endl;
+            cout << "1. View user details" << endl;
+            cout << "2. View users feedback" << endl;
+            cout << "3. View customers favourite universities" << endl;
+            cout << "4. Logout\n" << endl;
+            cout << "==========================================\n" << endl;
+            cout << "Please select an option (1-4): " << endl;
+            cin >> choice;
+
+            switch (choice)
+            {
+                case 1:
+                    //view user details
+                    break;
+                case 2:
+                    //view user feedback
+                    break;
+                case 3:   
+                    //view custooemrs favourite universities
+                    break;
+                case 4:
+                    //logout
+                    break;
+                default:
+                    cout << "Invalid choice, please try again" << endl;
+                    break;             
+            }
+        }
+        while (opt != 4);
+
+        
+    }; 
+    Admin* login(string ID, string password) {
+        // Admin * current = adminDLL.head;
+        while (current != NULL) {
+            if (ID == current -> ID && password) {
+                cout << "Welcome " << current-> name << endl;
+                return current;
+            }
+            cout << "Invalid credentials" << endl;
+            return NULL;
+        }
+                                        
+    }
+
+}
 
 int main()
 {
-    head = NULL;
+    string head = NULL;
 
     string rank, institution, locationCode, location, arScore, arRank, erScore, erRank, fsrScore, fsrRank, cpfScore, cpfRank, ifrScore, ifrRank, isrScore, isrRank, gerScore, gerRank, scoreScaled;
     ifstream file("2023 QS World University Rankings.csv");
@@ -139,8 +373,6 @@ int main()
     displayUniversityInfo();
     cout << endl;
     return 0;
-
-
 
 
 
