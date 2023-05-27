@@ -502,7 +502,7 @@ public:
                                         
     }
 
-}
+};
 
 int main()
 {
