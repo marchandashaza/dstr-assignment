@@ -6,38 +6,59 @@ template <class Node>
 class SingleLinkedList {
 private:
     Node* head;
-
+    Node* tail;
 public:
     // Constructor
     SingleLinkedList() {
         head = nullptr;
     }
 
-    // Insert a new node at the beginning of the list
-    void insert(int value) {
-        Node* newNode = new Node(value);
-        if (head == nullptr) {
-            head = newNode;
-        } else {
-            newNode->next = head;
-            head = newNode;
-        }
-        std::cout << "Inserted element: " << value << std::endl;
-    }
+    // Insert at the front
+    void insertFront(Node * newNode) {
+		if (head == NULL)
+		{
+			head = newNode;
+		}
+		else
+		{
+			newNode->nextAdd = head;
+			head = newNode;
+		}
 
+		size++;
+	}
+
+    // Insert at the end
+	void insertEnd(Node * newNode) {
+		if (head == NULL)
+		{
+			head = newNode;
+		}
+		else
+		{
+			Node* current = head;
+			while (current->nextAdd != NULL)
+			{
+				current = current->nextAdd;
+			}
+
+			current->nextAdd = newNode;
+		}
+
+		size++;
+	}
     // Display the elements in the list
     void display() {
-        if (head == nullptr) {
-            std::cout << "List is empty." << std::endl;
-            return;
+        Node* current = head;
+        while (current != nullptr) 
+        {
+            current->display();
+			cout << endl;
+			current = current->nextAdd;
         }
-
-        Node* currNode = head;
-        std::cout << "List elements: ";
-        while (currNode != nullptr) {
-            std::cout << currNode->data << " ";
-            currNode = currNode->next;
-        }
-        std::cout << std::endl;
+        std::cout << "List ends" << std::endl;
     }
+
+private:
+    int size;
 };

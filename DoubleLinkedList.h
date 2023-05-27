@@ -5,24 +5,42 @@ template <class Node>
 class DoubleLinkedList {
 private:
     Node* head;
+    Node* tail;
+    
 public:
     DoubleLinkedList() {
         head = nullptr;
     }
 
-    void insert(int value) {
-        Node* newNode = new Node(value);
-        if (head == nullptr) {
-            head = newNode;
-        } else {
-            Node* current = head;
-            while (current->next != nullptr) {
-                current = current->next;
-            }
-            current->next = newNode;
-            newNode->prev = current;
-        }
-    }
+    void InsertFront(Node* newNode) { 
+		if (head == NULL)
+		{
+			head = tail = newNode;
+		}
+		else
+		{
+			newNode->nextAdd = head;
+			head->prevAdd = newNode;
+			head = newNode;
+		}
+
+		size++;
+	}
+
+	void InsertEnd(Node* newNode) {
+		if (head == NULL)
+		{
+			head = tail = newNode;
+		}
+		else
+		{
+			tail->nextAdd = newNode;
+			newNode->prevAdd = tail;
+			tail = newNode;
+		}
+
+		size++;
+	}
 
     void remove(int value) {
         if (head == nullptr) {
@@ -56,10 +74,16 @@ public:
 
     void display() {
         Node* current = head;
-        while (current != nullptr) {
-            std::cout << current->data << " ";
-            current = current->next;
+        while (current != nullptr) 
+        {
+            current->display();
+			cout << endl;
+			current = current->nextAdd;
         }
-        std::cout << std::endl;
+        std::cout << "List ends" << std::endl;
     }
+
+private:
+    int size;
+
 };
