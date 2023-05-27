@@ -92,6 +92,58 @@ public:
 };
 
 
+class User{
+
+public:
+	
+	void static UserMainMenu() {
+		int Menu;
+		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
+		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
+		cout << "\n ===========================================================" << endl;
+		cout << "\n 1. Sign Up" << endl;
+		cout << "\n 2. Log In" << endl;
+		cout << "\n 3. View Universities" << endl;
+		cout << "\n 4. Search University" << endl;
+		cout << "\n 5. Sort Universities" << endl;
+		cout << "\n 6. Exit" << endl;
+		cout << "\n Please Input your Selection (1-5):  " << endl;
+		cin >> Menu;
+
+
+		switch(Menu) {
+			case 1:
+				void SignUp();
+				break;
+
+			case 2:
+				void Login();
+				break;
+			case 3:
+				void ViewUniversities();
+				break;
+
+			case 4:
+				void SearchUniversity();
+				break;
+
+			case 5:
+				void SortUniversities();
+				break;
+
+			case 6:
+				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
+				return;
+
+			default:
+				cout << "The Selection is Invalid, Please Select other Options" << endl;
+
+		}
+
+	}
+};
+
+
 class RegisteredUser {
 public:
     void displayMenu() {
@@ -205,77 +257,11 @@ private:
     }
 };
 
-class User{
-
-public:
-	
-	void static UserMainMenu() {
-		int Menu;
-		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
-		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
-		cout << "\n ===========================================================" << endl;
-		cout << "\n 1. Sign Up" << endl;
-		cout << "\n 2. Log In" << endl;
-		cout << "\n 3. View Universities" << endl;
-		cout << "\n 4. Search University" << endl;
-		cout << "\n 5. Sort Universities" << endl;
-		cout << "\n 6. Exit" << endl;
-		cout << "\n Please Input your Selection (1-5):  " << endl;
-		cin >> Menu;
-
-
-		switch(Menu) {
-			case 1:
-				void SignUp();
-				break;
-
-			case 2:
-				void Login();
-				break;
-			case 3:
-				void ViewUniversities();
-				break;
-
-			case 4:
-				void SearchUniversity();
-				break;
-
-			case 5:
-				void SortUniversities();
-				break;
-
-			case 6:
-				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
-				return;
-
-			default:
-				cout << "The Selection is Invalid, Please Select other Options" << endl;
-
-		}
-
-	}
-};
 
 class Admin
 {
 public:
-    Admin * nextadd;
-    Admin * prevadd;
-    Admin (){
-        this -> name = "";
-        this -> password = "";
-        this -> ID = "";
-        this -> nextadd = NULL;
-        this -> prevadd = NULL;
-    } 
-    Admin(string name, string password, string ID) {
-        this-> name = name;
-        this-> password = password;
-        this-> ID = ID;
-        this -> nextadd = NULL;
-        this -> prevadd = NULL;
-    };        
-    ~Admin() {};
+
     void adminmenu() {
         int choice;
         do
