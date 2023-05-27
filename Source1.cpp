@@ -1,9 +1,17 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <sstream>
 #include <vector>
+#include <ctime>
+#include <iomanip>
+#include <chrono>
 #include "SingleLinkedList.h"
 #include "DoubleLinkedList.h"
+#include "BinarySearch.h"
+#include "InterpolationSearch.h"
+#include "MergeSort.h"
+#include "QuickSort.h"
 #pragma once
 using namespace std;
 
@@ -96,7 +104,45 @@ public:
     void insertToEndList(string rank, string institution, string LocationCode, string Location, string ArScore, string ArRank,
 		string ErScore, string ErRank, string FsrScore, string FsrRank, string CpfScore, string CpfRank, string IfrScore, string IfrRank, string IsrScore,
 		string IsrRank, string IrnSCore, string IrnRank, string GerScore, string GerRank, string ScoreScaled);
+    void Binary_Search();
+    void Inter_Search();
+    void Merge_Sort();
+    void Quick_Sort();
+    void display_univinfo();
+    void display_uni();
+    bool compareAttributes();
+
 };
+
+void University :: display_uni()
+{
+    cout << "Rank: " << rank << endl;
+    cout << "Institution: " << institution << endl;
+    cout << "Location Code: " << LocationCode << endl;
+    cout << "Location: " << Location << endl;
+    cout << "Academic Reputation Score: " << ArScore << endl;
+    cout << "Academic Reputation Rank: " << ArRank << endl;
+    cout << "Employer Reputation Score: " << ErScore << endl;
+    cout << "Employer Reputation Rank: " << ErRank << endl;
+    cout << "Faculty/Student Reputation Score: " << FsrScore << endl;
+    cout << "Faculty/Student Reputation Rank: " << FsrRank << endl;
+    cout << "Citations per Faculty Score: " << CpfScore << endl;
+    cout << "Citations per Faculty Rank: " << CpfRank << endl;
+    cout << "International Faculty Ratio Score: " << IfrScore << endl;
+    cout << "International Faculty Ratio Rank: " << IfrRank << endl;
+    cout << "International Student Ratio Score: " << IsrScore << endl;
+    cout << "International Student Ratio Rank: " << IsrRank << endl;
+    cout << "International Research Network Score: " << IrnScore << endl;
+    cout << "International Research Network Rank: " << IrnRank << endl;
+    cout << "Employment Outcome Score: " << GerScore << endl;
+    cout << "Employment Outcome Rank: " << GerRank << endl;
+    cout << "Score Scaled: " << GerScore << endl; 
+}
+
+void University :: display_univinfo()
+{
+    univDLL.display_uniAll();
+}
 
 
 class User{
@@ -363,7 +409,7 @@ int main()
 
 
     cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
-    displayUniversityInfo();
+    display_univinfo();
     cout << endl;
     return 0;
 
