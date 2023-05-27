@@ -1,23 +1,12 @@
 #include <iostream>
 
-class Node {
-public:
-    int data;
-    Node* prev;
-    Node* next;
+template <class Node>
 
-    Node(int value) {
-        data = value;
-        prev = nullptr;
-        next = nullptr;
-    }
-};
-
-class DoublyLinkedList {
+class DoubleLinkedList {
 private:
     Node* head;
 public:
-    DoublyLinkedList() {
+    DoubleLinkedList() {
         head = nullptr;
     }
 
