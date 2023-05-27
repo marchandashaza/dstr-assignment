@@ -76,7 +76,7 @@ public:
         Node* current = head;
         while (current != nullptr) 
         {
-            current->display();
+            current->display_uni();
 			cout << endl;
 			current = current->nextAdd;
         }
