@@ -264,6 +264,68 @@ private:
     }
 };
 
+class userData {
+
+    userData * head; userData * tail;
+
+public:
+    string username;
+    string password; 
+	userData* nextAdd;
+	userData* prevAdd;
+	SingleLinkedList<userData> univSLL;
+	DoubleLinkedList<userData> univDLL;
+
+    userData(string username, string password) 
+    {
+		this->username = username;
+        this->password = password;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    userData() 
+    {
+		this->username = NULL;
+		this->password = NULL;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    void insertToEndList(string username, string password);
+    }
+
+};
+
+class userFav {
+    
+    userFav * head; userFav * tail;
+
+public:
+    string name;
+    string institution; 
+	userFav* nextAdd;
+	userFav* prevAdd;
+	SingleLinkedList<userFav> univSLL;
+	DoubleLinkedList<userFav> univDLL;
+
+    userFav(string name, string institution) 
+    {
+		this->name = name;
+        this->institution = institution;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    userFav() 
+    {
+		this->name = NULL;
+		this->institution = NULL;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    void insertToEndList(string name, string institution);
+    }
+};
+
+
 
 class Admin
 {
@@ -287,16 +349,16 @@ public:
             switch (choice)
             {
                 case 1:
-                    //view user details
+                    void userData();
                     break;
                 case 2:
                     //view user feedback
                     break;
                 case 3:   
-                    //view custooemrs favourite universities
+                    void userFav();
                     break;
                 case 4:
-                    //logout
+                    void UserMainMenu();
                     break;
                 default:
                     cout << "Invalid choice, please try again" << endl;
