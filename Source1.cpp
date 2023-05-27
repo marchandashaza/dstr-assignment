@@ -62,6 +62,11 @@ class Favorite{
         }
 };
 
+class Feedback
+{
+    //
+};
+
 class University 
 {
     University * head; University * tail;
@@ -160,6 +165,31 @@ public:
 
 };
 
+void University :: Binary_Search()
+{
+    //
+}
+
+void University :: Inter_Search()
+{
+    //
+}
+
+void University :: Merge_Sort()
+{
+    //
+}
+
+void University :: Quick_Sort()
+{
+    //
+}
+
+bool University :: compareAttributes()
+{
+    //
+}
+
 void University :: display_uni()
 {
     cout << "Rank: " << rank << endl;
@@ -187,7 +217,7 @@ void University :: display_uni()
 
 void University :: display_univinfo()
 {
-    univDLL.display_uniAll();
+    univDLL.display();
 }
 
 
