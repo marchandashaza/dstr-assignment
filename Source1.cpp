@@ -529,7 +529,10 @@ public:
 			file.close();
 
 		}
-        // else if ()
+        else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
+            void adminmenu();
+            file.close();
+        }
 		else {
 			cerr << "Login Failed!Please Re-Enter the Credentials!" << endl;
 		}
@@ -654,64 +657,64 @@ private:
     }
 };
 
-// class userData {
+class userData {
 
-//     userData * head; userData * tail;
+    userData * head; userData * tail;
 
-// public:
-//     string username;
-//     string password; 
-// 	userData* nextAdd;
-// 	userData* prevAdd;
-// 	SingleLinkedList<userData> univSLL;
-// 	DoubleLinkedList<userData> univDLL;
+public:
+    string username;
+    string password; 
+	userData* nextAdd;
+	userData* prevAdd;
+	SingleLinkedList<userData> univSLL;
+	DoubleLinkedList<userData> univDLL;
 
-//     userData(string username, string password) 
-//     {
-// 		this->username = username;
-//         this->password = password;
-// 		this->nextAdd = NULL;
-// 		this->prevAdd = NULL;
-// 	}
-//     userData() 
-//     {
-// 		this->username = NULL;
-// 		this->password = NULL;
-// 		this->nextAdd = NULL;
-// 		this->prevAdd = NULL;
-// 	}
-//     void insertToEndList(string username, string password);
-// };
+    userData(string username, string password) 
+    {
+		this->username = "";
+        this->password = "";
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    userData() 
+    {
+		this->username = username;
+		this->password = password;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    void insertToEndList(string username, string password);
+};
 
-// class userFav {
+class userFav {
     
-//     userFav * head; userFav * tail;
+    userFav * head; userFav * tail;
 
-// public:
-//     string name;
-//     string institution; 
-// 	userFav* nextAdd;
-// 	userFav* prevAdd;
-// 	SingleLinkedList<userFav> univSLL;
-// 	DoubleLinkedList<userFav> univDLL;
+public:
+    string name;
+    string institution; 
+	userFav* nextAdd;
+	userFav* prevAdd;
+	SingleLinkedList<userFav> univSLL;
+	DoubleLinkedList<userFav> univDLL;
 
-//     userFav(string name, string institution) 
-//     {
-// 		this->name = name;
-//         this->institution = institution;
-// 		this->nextAdd = NULL;
-// 		this->prevAdd = NULL;
-// 	}
-//     userFav() 
-//     {
-// 		this->name = NULL;
-// 		this->institution = NULL;
-// 		this->nextAdd = NULL;
-// 		this->prevAdd = NULL;
-// 	}
-//     void insertToEndList(string name, string institution);
+    userFav(string name, string institution) 
+    {
+		this->name = "";
+        this->institution = "";
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    userFav() 
+    {
+		this->name = name;
+		this->institution = institution;
+		this->nextAdd = NULL;
+		this->prevAdd = NULL;
+	}
+    void insertToEndList(string name, string institution);
 
-// };
+};
 
 
 
