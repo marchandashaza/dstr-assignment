@@ -673,6 +673,19 @@ private:
     }
 };
 
+struct UserData{
+    std::string username;
+    std::string password;
+};
+
+void readUserListFromCSV(const std::string& filename) {
+    std::ifstream inputFile(filename);
+
+    if (!inputFile) {
+        std::cerr << "Failed to open the file." << std::endl;
+        return;
+    }
+=======
 class userData {
 
     userData * head; userData * tail;
@@ -732,12 +745,87 @@ public:
 
 };
 
+    std::vector<UserData> userList;
+    std::string line;
 
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string field;
+        UserData userData;
 
+        // Read each field (username and password) separated by a comma
+        while (std::getline(iss, field, ',')) {
+            if (userData.username.empty())
+                userData.username = field;
+            else
+                userData.password = field;
+        }
+
+        userList.push_back(userData);
+    }
+
+    inputFile.close();
+
+    // Print the user data as a list
+    std::cout << "User List:" << std::endl;
+    for (const auto& user : userList) {
+        std::cout << "Username: " << user.username << ", Password: " << user.password << std::endl;
+    }
+}
+
+struct UserFav{
+    std::string name;
+    std::string institution;
+};
+
+void readUserFavFromCSV(const std::string& filename) {
+    std::ifstream inputFile(filename);
+
+    if (!inputFile) {
+        std::cerr << "Failed to open the file." << std::endl;
+    }
+
+    std::vector<UserFav> userFavList;
+    std::string line;
+
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string field;
+        UserFav userFav;
+
+        // Read each field (username and password) separated by a comma
+        while (std::getline(iss, field, ',')) {
+            if (userFav.name.empty())
+                userFav.name = field;
+            else
+                userFav.institution = field;
+        }
+
+        userFavList.push_back(userFav);
+    }
+
+    inputFile.close();
+
+    // Print the user data as a list
+    std::cout << "User List:" << std::endl;
+    for (const auto& user : userFavList) {
+        std::cout << "Name: " << user.name << ", Favourited Institution(s): " << user.institution << std::endl;
+    }
+}   
+
+void display_userdata() {
+    std::string filename = "userdata.csv";  
+    readUserListFromCSV(filename);
+}
+
+void display_userfav(){
+    std::string filename = "favorite.csv";  
+    readUserListFromCSV(filename);
+}
 class Admin
 {
 public:
-
+    
     void adminmenu() {
         int choice;
         do
@@ -756,13 +844,13 @@ public:
             switch (choice)
             {
                 case 1:
-                    void userData();
+                    display_userdata();
                     break;
                 case 2:
                     //view user feedback
                     break;
                 case 3:   
-                    void userFav();
+                    display_userfav();
                     break;
                 case 4:
                     void UserMainMenu();
@@ -771,11 +859,10 @@ public:
                     cout << "Invalid choice, please try again" << endl;
                     break;             
             }
-        }
-        while (choice != 4);
-
-        
+        } while (choice != 1 && choice != 2 && choice != 3 && choice !=4);
+            break;
     }; 
+
 
 };
 
