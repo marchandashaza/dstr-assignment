@@ -547,6 +547,7 @@ public:
         else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
             void adminmenu();
             file.close();
+
         }
 		else {
 			cerr << "Login Failed!Please Re-Enter the Credentials!" << endl;
