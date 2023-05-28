@@ -102,9 +102,24 @@ class Feedback
         this->fbreply_date = "N/A";
     }
 
-    string generateid()
+
+    //call using 
+    //generateid generator; 
+    //std::string feedbackID = generator.generatefeedbackid();
+    //std::cout << feedbackID << std::end1;
+    class generateid
     {
-        //
+        private:
+            int counter;
+
+        public:
+            generateid():counter(1){}
+            std::string generatefeedbackid(){
+                std::string feedbackID = "FB" + std::to_string(counter);
+                feedbackID = feedbackID.insert(2, std::string(3-std::to_string(counter).length(), '0'));
+                counter++;
+                return feedbackID;
+            }
     }
 };
 
@@ -757,18 +772,6 @@ public:
 
         
     }; 
-    // Admin* login(string ID, string password) {
-    //     // Admin * current = adminDLL.head;
-    //     while (current != NULL) {
-    //         if (ID == current -> ID && password) {
-    //             cout << "Welcome " << current-> name << endl;
-    //             return current;
-    //         }
-    //         cout << "Invalid credentials" << endl;
-    //         return NULL;
-    //     }
-                                        
-    // }
 
 };
 
