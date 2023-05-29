@@ -1,75 +1,63 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 using namespace std;
 
-// Merges two subarrays of array[].
-// First subarray is arr[begin..mid]
-// Second subarray is arr[mid+1..end]
-void merge(int array[], int const left, int const mid,
-    int const right)
+void merge(string* array, int const left, int const mid, int const right)
 {
     auto const subArrayOne = mid - left + 1;
     auto const subArrayTwo = right - mid;
 
-    // Create temp arrays
-    auto* leftArray = new int[subArrayOne],
-        * rightArray = new int[subArrayTwo];
+    auto* leftArray = new string[subArrayOne];
+    auto* rightArray = new string[subArrayTwo];
 
-    // Copy data to temp arrays leftArray[] and rightArray[]
     for (auto i = 0; i < subArrayOne; i++)
         leftArray[i] = array[left + i];
     for (auto j = 0; j < subArrayTwo; j++)
         rightArray[j] = array[mid + 1 + j];
 
-    auto indexOfSubArrayOne
-        = 0, // Initial index of first sub-array
-        indexOfSubArrayTwo
-        = 0; // Initial index of second sub-array
-    int indexOfMergedArray
-        = left; // Initial index of merged array
+    auto indexOfSubArrayOne = 0;
+    auto indexOfSubArrayTwo = 0;
+    int indexOfMergedArray = left;
 
-    // Merge the temp arrays back into array[left..right]
-    while (indexOfSubArrayOne < subArrayOne
-        && indexOfSubArrayTwo < subArrayTwo) {
-        if (leftArray[indexOfSubArrayOne]
-            <= rightArray[indexOfSubArrayTwo]) {
-            array[indexOfMergedArray]
-                = leftArray[indexOfSubArrayOne];
+    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo)
+    {
+        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
+        {
+            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
             indexOfSubArrayOne++;
         }
-        else {
-            array[indexOfMergedArray]
-                = rightArray[indexOfSubArrayTwo];
+        else
+        {
+            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
             indexOfSubArrayTwo++;
         }
         indexOfMergedArray++;
     }
-    // Copy the remaining elements of
-    // left[], if there are any
-    while (indexOfSubArrayOne < subArrayOne) {
-        array[indexOfMergedArray]
-            = leftArray[indexOfSubArrayOne];
+
+    while (indexOfSubArrayOne < subArrayOne)
+    {
+        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
         indexOfSubArrayOne++;
         indexOfMergedArray++;
     }
-    // Copy the remaining elements of
-    // right[], if there are any
-    while (indexOfSubArrayTwo < subArrayTwo) {
-        array[indexOfMergedArray]
-            = rightArray[indexOfSubArrayTwo];
+
+    while (indexOfSubArrayTwo < subArrayTwo)
+    {
+        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
         indexOfSubArrayTwo++;
         indexOfMergedArray++;
     }
+
     delete[] leftArray;
     delete[] rightArray;
 }
 
-// begin is for left index and end is
-// right index of the sub-array
-// of arr to be sorted */
-void mergeSort(int array[], int const begin, int const end)
+void mergeSort(string* array, int const begin, int const end)
 {
     if (begin >= end)
-        return; // Returns recursively
+        return;
 
     auto mid = begin + (end - begin) / 2;
     mergeSort(array, begin, mid);
@@ -77,31 +65,43 @@ void mergeSort(int array[], int const begin, int const end)
     merge(array, begin, mid, end);
 }
 
-
-// Function to print array
-void printArray(int A[], int size)
+void printArray(string* array, int size)
 {
     for (auto i = 0; i < size; i++)
-        cout << A[i] << " ";
+        cout << array[i] << endl;
 }
 
-// Driver code
-int main()
+void readCSVMergeSort(const string& filename)
 {
- 
-    int arr[5], i, elem;
-    cout << "Enter 5 Array Elements: ";
-    for (i = 0; i < 5; i++)
-        cin >> arr[i];
-   
-    auto arr_size = sizeof(arr) / sizeof(arr[0]);
+    ifstream file(filename);
+    if (!file)
+    {
+        cout << "Failed to open file: " << filename << endl;
+        return;
+    }
 
-    cout << "Given array is \n";
-    printArray(arr, arr_size);
+    const int MAX_SIZE = 100;
+    string values[MAX_SIZE];
+    string line;
+    int i = 0;
 
-    mergeSort(arr, 0, arr_size - 1);
+    while (getline(file, line) && i < MAX_SIZE)
+    {
+        stringstream ss(line);
+        string value;
 
-    cout << "\nSorted array is \n";
-    printArray(arr, arr_size);
-    return 0;
+        getline(ss, value, ',');
+        values[i] = value;
+
+        i++;
+    }
+
+    file.close();
+
+    auto arr_size = i;
+
+    mergeSort(values, 0, arr_size - 1);
+
+    cout << "\nSorted contents are:\n";
+    printArray(values, arr_size);
 }

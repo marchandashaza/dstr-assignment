@@ -687,120 +687,112 @@ private:
 };
 
 
-struct UserData {
-    std::string username;
-    std::string password;
+struct User {
+    string name;
+    string password;
 };
 
-void readUserListFromCSV(const std::string& filename, UserData*& userList, int& count) {
-    std::ifstream inputFile(filename);
-
-    if (!inputFile) {
-        std::cerr << "Failed to open the file." << std::endl;
+void updatePassword(const string& filename) {
+    vector<User> users;
+    ifstream file(filename);
+    
+    if (!file) {
+        cout << "Failed to open file: " << filename << endl;
         return;
     }
-
-    count = 0;
-    std::string line;
-
-    while (std::getline(inputFile, line)) {
-        count++;
-    }
-
-    inputFile.clear();
-    inputFile.seekg(0, std::ios::beg);
-
-    userList = new UserData[count];
-
-    int i = 0;
-    while (std::getline(inputFile, line)) {
-        std::istringstream iss(line);
-        std::string field;
-        UserData userData;
-
-        // Read each field (username and password) separated by a comma
-        while (std::getline(iss, field, ',')) {
-            if (userData.username.empty())
-                userData.username = field;
-            else
-                userData.password = field;
+    
+    User user;
+    string line;
+    
+    // Read and parse the file
+    while (getline(file, line)) {
+        size_t pos = line.find(", ");
+        if (pos != string::npos) {
+            user.name = line.substr(0, pos);
+            user.password = line.substr(pos + 2);
+            users.push_back(user);
         }
-
-        userList[i] = userData;
-        i++;
     }
-
-    inputFile.close();
-}
-
-struct UserFav {
-    std::string name;
-    std::string institution;
-};
-
-void readUserFavFromCSV(const std::string& filename, UserFav*& userFavList, int& count) {
-    std::ifstream inputFile(filename);
-
-    if (!inputFile) {
-        std::cerr << "Failed to open the file." << std::endl;
+    
+    file.close();
+    
+    // Ask for the name of the user to update
+    string nameToUpdate;
+    cout << "Enter the name of the user to update: ";
+    getline(cin, nameToUpdate);
+    
+    // Find the user to update
+    bool found = false;
+    for (User& u : users) {
+        if (u.name == nameToUpdate) {
+            found = true;
+            cout << "Enter the new password for " << u.name << ": ";
+            getline(cin, u.password);
+            break;
+        }
+    }
+    
+    if (!found) {
+        cout << "User not found." << endl;
         return;
     }
-
-    count = 0;
-    std::string line;
-
-    while (std::getline(inputFile, line)) {
-        count++;
+    
+    // Write the updated users to the file
+    ofstream outFile(filename);
+    if (!outFile) {
+        cout << "Failed to open file: " << filename << endl;
+        return;
     }
-
-    inputFile.clear();
-    inputFile.seekg(0, std::ios::beg);
-
-    userFavList = new UserFav[count];
-
-    int i = 0;
-    while (std::getline(inputFile, line)) {
-        std::istringstream iss(line);
-        std::string field;
-        UserFav userFav;
-
-        // Read each field (name and institution) separated by a comma
-        while (std::getline(iss, field, ',')) {
-            if (userFav.name.empty())
-                userFav.name = field;
-            else
-                userFav.institution = field;
-        }
-
-        userFavList[i] = userFav;
-        i++;
+    
+    for (const User& u : users) {
+        outFile << u.name << ", " << u.password << endl;
     }
-
-    inputFile.close();
+    
+    outFile.close();
+    
+    cout << "File updated successfully." << endl;
 }
 
-void display_userdata(const UserData* userList, int count) {
-    std::cout << "User List:" << std::endl;
-    for (int i = 0; i < count; i++) {
-        std::cout << "Username: " << userList[i].username << ", Password: " << userList[i].password << std::endl;
-    }
-}
-
-void display_userfav(const UserFav* userFavList, int count) {
-    std::cout << "User List:" << std::endl;
-    for (int i = 0; i < count; i++) {
-        std::cout << "Name: " << userFavList[i].name << ", Favourited Institution(s): " << userFavList[i].institution << std::endl;
-    }
+void changeUserPassword(){
+    const string filename = "userdata.txt";
+    updatePassword(filename);
 }
 
 
+void displayMergeSortedUserData(){
+    const string filename = "userdata.csv";
+    readCSVMergeSort(filename);
+}
+
+void displayQuickSortedUserData(){
+    string filename = "userdata.csv";
+    readCSVQuickSort(filename);
+}
+
+void displayMergeSortedUserFeedback(){
+    const string filename = "feedback.csv";
+    readCSVMergeSort(filename);
+}
+
+void displayQuickSortedUserFeedback(){
+    const string filename = "feedback.csv";
+    readCSVQuickSort(filename);
+}
+
+void displayMergeSortedUserFav(){
+    const string filename = "favorite.csv";
+    readCSVMergeSort(filename);
+}
+
+void displayQuickSortedUserFav(){
+    const string filename = "favorite.csv";
+    readCSVQuickSort(filename);
+}
 
 class Admin {
 public:
     void adminmenu() {
         int choice;
-        UserData* userList = nullptr;
-        UserFav* userFavList = nullptr;
         int userCount = 0;
         int userFavCount = 0;
 
@@ -817,24 +809,87 @@ public:
             std::cin >> choice;
 
             switch (choice) {
-                case 1:
-                    if (userList == nullptr) {
-                        readUserListFromCSV("userdata.csv", userList, userCount);
+                case 1: //view user details
+                    int sortchoice;
+
+                    std::cout << "1. Merge Sort\n" << std::endl;
+                    std::cout << "2. Quick Sort\n\n" << std::endl;
+                    std::cout << "How would you like to sort the user details?: " << std::endl;
+                    std::cin >> sortchoice;
+
+                    switch (sortchoice) {
+                        case 1:
+                            displayMergeSortedUserData();
+
+                            
+
+                        case 2:
+                            displayQuickSortedUserData();
+
+                        default:
+                            std::cout << "Invalid input!" << std::endl;
+                            adminmenu();
                     }
-                    display_userdata(userList, userCount);
-                    break;
-                case 2:
-                    // View user feedback
-                    break;
-                case 3:
-                    if (userFavList == nullptr) {
-                        readUserFavFromCSV("favorite.csv", userFavList, userFavCount);
+
+                    int userchoice;
+
+                    std::cout << "1. Change password\n" << std::endl;
+                    std::cout << "2. Back\n\n" << std::endl;
+                    std::cout << "What would you like to do next?" << std::endl;
+                    std::cin >> userchoice;
+
+                    switch (sortchoice){
+                        case 1:
+                            void updatePassword();
+                        
+                        case 2:
+                            adminmenu();
+
+                        case 3:
+                            std::cout << "Invalid input!" << std::endl;
+                            adminmenu();
                     }
-                    display_userfav(userFavList, userFavCount);
+
+                    
+                case 2: //view user feedback
+                    int sortchoice;
+
+                    std::cout << "1. Merge Sort\n" << std::endl;
+                    std::cout << "2. Quick Sort\n\n" << std::endl;
+                    std::cout << "How would you like to sort the user feedback?: " << std::endl;
+                    std::cin >> sortchoice;
+
+                    switch(sortchoice){
+                        case 1:
+                            displayMergeSortedUserFeedback();
+                        
+                        case 2: 
+                            displayQuickSortedUserFeedback();
+                        default:
+                            std::cout << "Invalid input!" << std::endl;
+                            adminmenu();
+                    }
+                    break;
+                case 3: //view customers favorite unis
+                    int sortchoice;
+
+                    std::cout << "1. Merge Sort\n" << std::endl;
+                    std::cout << "2. Quick Sort\n\n" << std::endl;
+                    std::cout << "How would you like to sort the user's favorite universities?: " << std::endl;
+                    std::cin >> sortchoice;
+
+                    switch(sortchoice){
+                        case 1:
+                            displayMergeSortedUserFav();
+                        
+                        case 2: 
+                            displayQuickSortedUserFav();
+                        default:
+                            std::cout << "Invalid input!" << std::endl;
+                            adminmenu();
+                    }
                     break;
                 case 4:
-                    delete[] userList;
-                    delete[] userFavList;
                     void UserMainMenu();
                     break;
                 default:
@@ -901,23 +956,4 @@ int main()
     cout << endl;
     return 0;
 
-
-
-
-    // int counter = 0;
-    // int arr[5], i, elem;
-    // cout << "Enter 5 Array Elements: ";
-    // for (i = 0; i < 5; i++)
-    //     cin >> arr[i];
-
-    // auto arr_size = sizeof(arr) / sizeof(arr[0]);
-
-    // cout << "Given array is \n";
-    // printArray(arr, arr_size);
-
-    // mergeSort(arr, 0, arr_size - 1);
-
-    // cout << "\nSorted array is \n";
-    // printArray(arr, arr_size);
-    // return 0;
 }
