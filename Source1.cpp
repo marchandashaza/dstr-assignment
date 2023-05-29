@@ -754,13 +754,13 @@ void updatePassword(const string& filename) {
 }
 
 void changeUserPassword(){
-    const string filename = "userdata.txt";
+    string filename = "userdata.txt";
     updatePassword(filename);
 }
 
 
 void displayMergeSortedUserData(){
-    const string filename = "userdata.csv";
+    string filename = "userdata.csv";
     readCSVMergeSort(filename);
 }
 
@@ -770,22 +770,22 @@ void displayQuickSortedUserData(){
 }
 
 void displayMergeSortedUserFeedback(){
-    const string filename = "feedback.csv";
+    string filename = "feedback.csv";
     readCSVMergeSort(filename);
 }
 
 void displayQuickSortedUserFeedback(){
-    const string filename = "feedback.csv";
+    string filename = "feedback.csv";
     readCSVQuickSort(filename);
 }
 
 void displayMergeSortedUserFav(){
-    const string filename = "favorite.csv";
+    string filename = "favorite.csv";
     readCSVMergeSort(filename);
 }
 
 void displayQuickSortedUserFav(){
-    const string filename = "favorite.csv";
+    string filename = "favorite.csv";
     readCSVQuickSort(filename);
 }
 
@@ -819,9 +819,7 @@ public:
 
                     switch (sortchoice) {
                         case 1:
-                            displayMergeSortedUserData();
-
-                            
+                            displayMergeSortedUserData();        
 
                         case 2:
                             displayQuickSortedUserData();

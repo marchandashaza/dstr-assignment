@@ -2,104 +2,57 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <algorithm>
+
 using namespace std;
 
-struct Node {
-    string data;
-    struct Node* next;
-};
-
-void push(struct Node** head_ref, string new_data)
+bool isNumeric(const string& value)
 {
-    struct Node* new_node = new Node;
-    new_node->data = new_data;
-    new_node->next = (*head_ref);
-    (*head_ref) = new_node;
-}
-
-void printList(struct Node* node)
-{
-    cout << "Sorted list:" << endl;
-    while (node != NULL) {
-        cout << node->data << endl;
-        node = node->next;
+    try
+    {
+        size_t pos;
+        stoi(value, &pos);
+        return pos == value.size();  // Check if the entire string was converted to a number
+    }
+    catch (const exception&)
+    {
+        return false;
     }
 }
 
-struct Node* getTail(struct Node* cur)
-{
-    while (cur != NULL && cur->next != NULL)
-        cur = cur->next;
-    return cur;
-}
+template <typename T>
+int partition(T array[], int low, int high) {
+    T pivot = array[high];
+    int i = low - 1;
 
-struct Node* partition(struct Node* head, struct Node* end,
-                       struct Node** newHead,
-                       struct Node** newEnd)
-{
-    struct Node* pivot = end;
-    struct Node *prev = NULL, *cur = head, *tail = pivot;
-
-    while (cur != pivot) {
-        if (cur->data < pivot->data) {
-            if ((*newHead) == NULL)
-                (*newHead) = cur;
-
-            prev = cur;
-            cur = cur->next;
-        }
-        else {
-            if (prev)
-                prev->next = cur->next;
-            struct Node* tmp = cur->next;
-            cur->next = NULL;
-            tail->next = cur;
-            tail = cur;
-            cur = tmp;
+    for (int j = low; j < high; j++) {
+        if (array[j] <= pivot) {
+            i++;
+            swap(array[i], array[j]);
         }
     }
 
-    if ((*newHead) == NULL)
-        (*newHead) = pivot;
-
-    (*newEnd) = tail;
-
-    return pivot;
+    swap(array[i + 1], array[high]);
+    return i + 1;
 }
 
-struct Node* quickSortRecur(struct Node* head, struct Node* end)
-{
-    if (!head || head == end)
-        return head;
+template <typename T>
+void quickSort(T array[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(array, low, high);
 
-    Node* newHead = NULL, * newEnd = NULL;
-    struct Node* pivot = partition(head, end, &newHead, &newEnd);
-
-    if (newHead != pivot) {
-        struct Node* tmp = newHead;
-        while (tmp->next != pivot)
-            tmp = tmp->next;
-        tmp->next = NULL;
-
-        newHead = quickSortRecur(newHead, tmp);
-
-        tmp = getTail(newHead);
-        tmp->next = pivot;
+        quickSort(array, low, pivotIndex - 1);
+        quickSort(array, pivotIndex + 1, high);
     }
-
-    pivot->next = quickSortRecur(pivot->next, newEnd);
-
-    return newHead;
 }
 
-void quickSort(struct Node** headRef)
-{
-    (*headRef) = quickSortRecur(*headRef, getTail(*headRef));
-    return;
+void printArray(const string array[], int size) {
+    for (int i = 0; i < size; i++) {
+        cout << array[i] << endl;
+    }
 }
 
-void readCSVQuickSort(const string& filename)
-{
+void readCSVQuickSort(const string& filename) {
     ifstream file(filename);
     if (!file) {
         cout << "Failed to open file: " << filename << endl;
@@ -114,20 +67,33 @@ void readCSVQuickSort(const string& filename)
     while (getline(file, line) && i < MAX_SIZE) {
         stringstream ss(line);
         string value;
-
         getline(ss, value, ',');
         values[i] = value;
-
         i++;
     }
 
     file.close();
 
-    struct Node* head = NULL;
+    int arrSize = i;
 
-    for (int j = i - 1; j >= 0; j--)
-        push(&head, values[j]);
+    bool isNumericArray = true;
+    for (int j = 0; j < arrSize; j++) {
+        if (!isNumeric(values[j])) {
+            isNumericArray = false;
+            break;
+        }
+    }
 
-    cout << "\nSorted array is:" << endl;
-    printList(head);
+    quickSort(values, 0, arrSize - 1);
+
+    cout << "\nSorted contents are:\n";
+    printArray(values, arrSize);
+}
+
+int main() {
+    string filename = "file.txt"; // Replace with the actual filename
+
+    readCSVQuickSort(filename);
+
+    return 0;
 }
