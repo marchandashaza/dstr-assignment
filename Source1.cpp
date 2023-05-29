@@ -545,7 +545,8 @@ public:
 
 		}
         else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
-            void adminmenu();
+            Admin admin;
+            admin.adminmenu();
             file.close();
 
         }
@@ -673,111 +674,169 @@ private:
     }
 };
 
-class userData {
-
-    userData * head; userData * tail;
-
-public:
-    string username;
-    string password; 
-	userData* nextAdd;
-	userData* prevAdd;
-	SingleLinkedList<userData> univSLL;
-	DoubleLinkedList<userData> univDLL;
-
-    userData(string username, string password) 
-    {
-		this->username = "";
-        this->password = "";
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userData() 
-    {
-		this->username = username;
-		this->password = password;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string username, string password);
+struct UserData {
+    std::string username;
+    std::string password;
 };
 
-class userFav {
-    
-    userFav * head; userFav * tail;
+void readUserListFromCSV(const std::string& filename, UserData*& userList, int& count) {
+    std::ifstream inputFile(filename);
 
-public:
-    string name;
-    string institution; 
-	userFav* nextAdd;
-	userFav* prevAdd;
-	SingleLinkedList<userFav> univSLL;
-	DoubleLinkedList<userFav> univDLL;
+    if (!inputFile) {
+        std::cerr << "Failed to open the file." << std::endl;
+        return;
+    }
 
-    userFav(string name, string institution) 
-    {
-		this->name = "";
-        this->institution = "";
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userFav() 
-    {
-		this->name = name;
-		this->institution = institution;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string name, string institution);
+    count = 0;
+    std::string line;
 
+    while (std::getline(inputFile, line)) {
+        count++;
+    }
+
+    inputFile.clear();
+    inputFile.seekg(0, std::ios::beg);
+
+    userList = new UserData[count];
+
+    int i = 0;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string field;
+        UserData userData;
+
+        // Read each field (username and password) separated by a comma
+        while (std::getline(iss, field, ',')) {
+            if (userData.username.empty())
+                userData.username = field;
+            else
+                userData.password = field;
+        }
+
+        userList[i] = userData;
+        i++;
+    }
+
+    inputFile.close();
+}
+
+struct UserFav {
+    std::string name;
+    std::string institution;
 };
 
+void readUserFavFromCSV(const std::string& filename, UserFav*& userFavList, int& count) {
+    std::ifstream inputFile(filename);
+
+    if (!inputFile) {
+        std::cerr << "Failed to open the file." << std::endl;
+        return;
+    }
+
+    count = 0;
+    std::string line;
+
+    while (std::getline(inputFile, line)) {
+        count++;
+    }
+
+    inputFile.clear();
+    inputFile.seekg(0, std::ios::beg);
+
+    userFavList = new UserFav[count];
+
+    int i = 0;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        std::string field;
+        UserFav userFav;
+
+        // Read each field (name and institution) separated by a comma
+        while (std::getline(iss, field, ',')) {
+            if (userFav.name.empty())
+                userFav.name = field;
+            else
+                userFav.institution = field;
+        }
+
+        userFavList[i] = userFav;
+        i++;
+    }
+
+    inputFile.close();
+}
+
+void display_userdata(const UserData* userList, int count) {
+    std::cout << "User List:" << std::endl;
+    for (int i = 0; i < count; i++) {
+        std::cout << "Username: " << userList[i].username << ", Password: " << userList[i].password << std::endl;
+    }
+}
+
+void display_userfav(const UserFav* userFavList, int count) {
+    std::cout << "User List:" << std::endl;
+    for (int i = 0; i < count; i++) {
+        std::cout << "Name: " << userFavList[i].name << ", Favourited Institution(s): " << userFavList[i].institution << std::endl;
+    }
+}
 
 
-class Admin
-{
+
+class Admin {
 public:
-
     void adminmenu() {
         int choice;
-        do
-        {
-            cout << "University Ranking System\n" << endl;
-            cout << "What would you like to do? \n\n" << endl;
-            cout << "==========================================\n" << endl;
-            cout << "1. View user details" << endl;
-            cout << "2. View users feedback" << endl;
-            cout << "3. View customers favourite universities" << endl;
-            cout << "4. Logout\n" << endl;
-            cout << "==========================================\n" << endl;
-            cout << "Please select an option (1-4): " << endl;
-            cin >> choice;
+        UserData* userList = nullptr;
+        UserFav* userFavList = nullptr;
+        int userCount = 0;
+        int userFavCount = 0;
 
-            switch (choice)
-            {
+        do {
+            std::cout << "University Ranking System\n" << std::endl;
+            std::cout << "What would you like to do? \n\n" << std::endl;
+            std::cout << "==========================================\n" << std::endl;
+            std::cout << "1. View user details" << std::endl;
+            std::cout << "2. View users feedback" << std::endl;
+            std::cout << "3. View customers favourite universities" << std::endl;
+            std::cout << "4. Logout\n" << std::endl;
+            std::cout << "==========================================\n" << std::endl;
+            std::cout << "Please select an option (1-4): " << std::endl;
+            std::cin >> choice;
+
+            switch (choice) {
                 case 1:
-                    void userData();
+                    if (userList == nullptr) {
+                        readUserListFromCSV("userdata.csv", userList, userCount);
+                    }
+                    display_userdata(userList, userCount);
                     break;
                 case 2:
-                    //view user feedback
+                    // View user feedback
                     break;
-                case 3:   
-                    void userFav();
+                case 3:
+                    if (userFavList == nullptr) {
+                        readUserFavFromCSV("favorite.csv", userFavList, userFavCount);
+                    }
+                    display_userfav(userFavList, userFavCount);
                     break;
                 case 4:
+                    delete[] userList;
+                    delete[] userFavList;
                     void UserMainMenu();
                     break;
                 default:
-                    cout << "Invalid choice, please try again" << endl;
-                    break;             
+                    std::cout << "Invalid choice, please try again" << std::endl;
+                    break;
             }
-        }
-        while (choice != 4);
-
-        
-    }; 
-
+        } while (choice != 1 && choice != 2 && choice != 3 && choice != 4);
+    }
 };
+
+int main() {
+    Admin admin;
+    admin.adminmenu();
+    return 0;
+}
 
 int main()
 {
