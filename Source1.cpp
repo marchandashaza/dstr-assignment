@@ -57,7 +57,7 @@ class Favorite{
 
                     current = current -> nextAdd;
                 }
-                cout << "End of favourited institutions" << endl;
+                cout << "End of favourited institutions" << endl; 
             }
         }
 };
@@ -218,7 +218,7 @@ public:
     void Merge_Sort();
     void Quick_Sort();
     void display_univinfo();
-    void display_uni();
+    void display();
     bool compareAttributes();
 
 };
@@ -415,7 +415,7 @@ bool University :: compareAttributes()
     //
 }
 
-void University :: display_uni()
+void University :: display()
 {
     cout << "Rank: " << rank << endl;
     cout << "Institution: " << institution << endl;
@@ -557,7 +557,8 @@ public:
 
 		}
         else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
-            void adminmenu();
+            Admin admin;
+            admin.adminmenu();
             file.close();
 
         }
@@ -685,81 +686,33 @@ private:
     }
 };
 
-struct UserData{
+
+struct UserData {
     std::string username;
     std::string password;
 };
 
-void readUserListFromCSV(const std::string& filename) {
+void readUserListFromCSV(const std::string& filename, UserData*& userList, int& count) {
     std::ifstream inputFile(filename);
 
     if (!inputFile) {
         std::cerr << "Failed to open the file." << std::endl;
         return;
     }
-=======
-class userData {
 
-    userData * head; userData * tail;
-
-public:
-    string username;
-    string password; 
-	userData* nextAdd;
-	userData* prevAdd;
-	SingleLinkedList<userData> univSLL;
-	DoubleLinkedList<userData> univDLL;
-
-    userData(string username, string password) 
-    {
-		this->username = "";
-        this->password = "";
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userData() 
-    {
-		this->username = username;
-		this->password = password;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string username, string password);
-};
-
-class userFav {
-    
-    userFav * head; userFav * tail;
-
-public:
-    string name;
-    string institution; 
-	userFav* nextAdd;
-	userFav* prevAdd;
-	SingleLinkedList<userFav> univSLL;
-	DoubleLinkedList<userFav> univDLL;
-
-    userFav(string name, string institution) 
-    {
-		this->name = "";
-        this->institution = "";
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    userFav() 
-    {
-		this->name = name;
-		this->institution = institution;
-		this->nextAdd = NULL;
-		this->prevAdd = NULL;
-	}
-    void insertToEndList(string name, string institution);
-
-};
-
-    std::vector<UserData> userList;
+    count = 0;
     std::string line;
 
+    while (std::getline(inputFile, line)) {
+        count++;
+    }
+
+    inputFile.clear();
+    inputFile.seekg(0, std::ios::beg);
+
+    userList = new UserData[count];
+
+    int i = 0;
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
         std::string field;
@@ -773,39 +726,45 @@ public:
                 userData.password = field;
         }
 
-        userList.push_back(userData);
+        userList[i] = userData;
+        i++;
     }
 
     inputFile.close();
-
-    // Print the user data as a list
-    std::cout << "User List:" << std::endl;
-    for (const auto& user : userList) {
-        std::cout << "Username: " << user.username << ", Password: " << user.password << std::endl;
-    }
 }
 
-struct UserFav{
+struct UserFav {
     std::string name;
     std::string institution;
 };
 
-void readUserFavFromCSV(const std::string& filename) {
+void readUserFavFromCSV(const std::string& filename, UserFav*& userFavList, int& count) {
     std::ifstream inputFile(filename);
 
     if (!inputFile) {
         std::cerr << "Failed to open the file." << std::endl;
+        return;
     }
 
-    std::vector<UserFav> userFavList;
+    count = 0;
     std::string line;
 
+    while (std::getline(inputFile, line)) {
+        count++;
+    }
+
+    inputFile.clear();
+    inputFile.seekg(0, std::ios::beg);
+
+    userFavList = new UserFav[count];
+
+    int i = 0;
     while (std::getline(inputFile, line)) {
         std::istringstream iss(line);
         std::string field;
         UserFav userFav;
 
-        // Read each field (username and password) separated by a comma
+        // Read each field (name and institution) separated by a comma
         while (std::getline(iss, field, ',')) {
             if (userFav.name.empty())
                 userFav.name = field;
@@ -813,109 +772,127 @@ void readUserFavFromCSV(const std::string& filename) {
                 userFav.institution = field;
         }
 
-        userFavList.push_back(userFav);
+        userFavList[i] = userFav;
+        i++;
     }
 
     inputFile.close();
+}
 
-    // Print the user data as a list
+void display_userdata(const UserData* userList, int count) {
     std::cout << "User List:" << std::endl;
-    for (const auto& user : userFavList) {
-        std::cout << "Name: " << user.name << ", Favourited Institution(s): " << user.institution << std::endl;
+    for (int i = 0; i < count; i++) {
+        std::cout << "Username: " << userList[i].username << ", Password: " << userList[i].password << std::endl;
     }
-}   
-
-void display_userdata() {
-    std::string filename = "userdata.csv";  
-    readUserListFromCSV(filename);
 }
 
-void display_userfav(){
-    std::string filename = "favorite.csv";  
-    readUserListFromCSV(filename);
+void display_userfav(const UserFav* userFavList, int count) {
+    std::cout << "User List:" << std::endl;
+    for (int i = 0; i < count; i++) {
+        std::cout << "Name: " << userFavList[i].name << ", Favourited Institution(s): " << userFavList[i].institution << std::endl;
+    }
 }
-class Admin
-{
+
+
+
+class Admin {
 public:
-    
     void adminmenu() {
         int choice;
-        do
-        {
-            cout << "University Ranking System\n" << endl;
-            cout << "What would you like to do? \n\n" << endl;
-            cout << "==========================================\n" << endl;
-            cout << "1. View user details" << endl;
-            cout << "2. View users feedback" << endl;
-            cout << "3. View customers favourite universities" << endl;
-            cout << "4. Logout\n" << endl;
-            cout << "==========================================\n" << endl;
-            cout << "Please select an option (1-4): " << endl;
-            cin >> choice;
+        UserData* userList = nullptr;
+        UserFav* userFavList = nullptr;
+        int userCount = 0;
+        int userFavCount = 0;
 
-            switch (choice)
-            {
+        do {
+            std::cout << "University Ranking System\n" << std::endl;
+            std::cout << "What would you like to do? \n\n" << std::endl;
+            std::cout << "==========================================\n" << std::endl;
+            std::cout << "1. View user details" << std::endl;
+            std::cout << "2. View users feedback" << std::endl;
+            std::cout << "3. View customers favourite universities" << std::endl;
+            std::cout << "4. Logout\n" << std::endl;
+            std::cout << "==========================================\n" << std::endl;
+            std::cout << "Please select an option (1-4): " << std::endl;
+            std::cin >> choice;
+
+            switch (choice) {
                 case 1:
-                    display_userdata();
+                    if (userList == nullptr) {
+                        readUserListFromCSV("userdata.csv", userList, userCount);
+                    }
+                    display_userdata(userList, userCount);
                     break;
                 case 2:
-                    //view user feedback
+                    // View user feedback
                     break;
-                case 3:   
-                    display_userfav();
+                case 3:
+                    if (userFavList == nullptr) {
+                        readUserFavFromCSV("favorite.csv", userFavList, userFavCount);
+                    }
+                    display_userfav(userFavList, userFavCount);
                     break;
                 case 4:
+                    delete[] userList;
+                    delete[] userFavList;
                     void UserMainMenu();
                     break;
                 default:
-                    cout << "Invalid choice, please try again" << endl;
-                    break;             
+                    std::cout << "Invalid choice, please try again" << std::endl;
+                    break;
             }
-        } while (choice != 1 && choice != 2 && choice != 3 && choice !=4);
-            break;
-    }; 
-
-
+        } while (choice != 1 && choice != 2 && choice != 3 && choice != 4);
+    }
 };
 
 int main()
 {
-    string head = NULL;
-
-    string rank, institution, locationCode, location, arScore, arRank, erScore, erRank, fsrScore, fsrRank, cpfScore, cpfRank, ifrScore, ifrRank, isrScore, isrRank, gerScore, gerRank, scoreScaled;
-    ifstream file("2023 QS World University Rankings.csv");
-
-    while (file.good())
+    string rank, institution, locationCode, location, arScore, arRank, erScore, erRank, fsrScore, fsrRank, cpfScore, 
+            cpfRank, ifrScore, ifrRank, isrScore, isrRank, gerScore, gerRank, scoreScaled;
+    string username, password;
+    //
+    University * uni = new University();
+    User * user = new User();
+    RegisteredUser * reguser = new RegisteredUser();
+    Admin * admin = new Admin();
+    Favorite * fav = new Favorite();
+    Feedback * feedb = new Feedback();
+    fstream file;
+    file.open("2023 QS World University Rankings.csv", ios::in);
+    if (file.is_open()) 
     {
-        getline(file, rank, ',');
-        getline(file, institution, ',');
-        getline(file, locationCode, ',');
-        getline(file, location, ',');
-        getline(file, arScore, ',');
-        getline(file, arRank, ',');
-        getline(file, erScore, ',');
-        getline(file, erRank, ',');
-        getline(file, fsrScore, ',');
-        getline(file, fsrRank, ',');
-        getline(file, cpfScore, ',');
-        getline(file, cpfRank, ',');
-        getline(file, ifrScore, ',');
-        getline(file, ifrRank, ',');
-        getline(file, isrScore, ',');
-        getline(file, isrRank, ',');
-        getline(file, gerScore, ',');
-        getline(file, gerRank, ',');
-        getline(file, scoreScaled);
-        if (rank == "Rank")
+            while (file.good())
         {
-            continue;
+            getline(file, rank, ',');
+            getline(file, institution, ',');
+            getline(file, locationCode, ',');
+            getline(file, location, ',');
+            getline(file, arScore, ',');
+            getline(file, arRank, ',');
+            getline(file, erScore, ',');
+            getline(file, erRank, ',');
+            getline(file, fsrScore, ',');
+            getline(file, fsrRank, ',');
+            getline(file, cpfScore, ',');
+            getline(file, cpfRank, ',');
+            getline(file, ifrScore, ',');
+            getline(file, ifrRank, ',');
+            getline(file, isrScore, ',');
+            getline(file, isrRank, ',');
+            getline(file, gerScore, ',');
+            getline(file, gerRank, ',');
+            getline(file, scoreScaled);
+            if (rank == "Rank")
+            {
+                continue;
+            }
+            else if (rank == "")
+            {
+                break;
+            }
+            InsertToTheFrontOfList(stoi(rank), institution, locationCode, location, stod(arScore), stoi(arRank), stod(erScore), stoi(erRank), stod(fsrScore), 
+            stoi(fsrRank), stod(cpfScore), stoi(cpfRank), stod(ifrScore), stoi(ifrRank), stod(isrScore), stoi(isrRank), stod(gerScore), stoi(gerRank), stod(scoreScaled));
         }
-        else if (rank == "")
-        {
-            break;
-        }
-        InsertToTheFrontOfList(stoi(rank), institution, locationCode, location, stod(arScore), stoi(arRank), stod(erScore), stoi(erRank), stod(fsrScore), 
-        stoi(fsrRank), stod(cpfScore), stoi(cpfRank), stod(ifrScore), stoi(ifrRank), stod(isrScore), stoi(isrRank), stod(gerScore), stoi(gerRank), stod(scoreScaled));
     }
 
 
