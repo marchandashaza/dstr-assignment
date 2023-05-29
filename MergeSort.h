@@ -4,7 +4,21 @@
 #include <string>
 using namespace std;
 
-void merge(string* array, int const left, int const mid, int const right)
+bool isNumeric(const string& value)
+{
+    try
+    {
+        size_t pos;
+        stoi(value, &pos);
+        return pos == value.size();  // Check if the entire string was converted to a number
+    }
+    catch (const exception&)
+    {
+        return false;
+    }
+}
+
+void merge(string* array, int const left, int const mid, int const right, bool isNumericArray)
 {
     auto const subArrayOne = mid - left + 1;
     auto const subArrayTwo = right - mid;
@@ -23,15 +37,31 @@ void merge(string* array, int const left, int const mid, int const right)
 
     while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo)
     {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
+        if (isNumericArray)
         {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
+            if (stoi(leftArray[indexOfSubArrayOne]) <= stoi(rightArray[indexOfSubArrayTwo]))
+            {
+                array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
+                indexOfSubArrayOne++;
+            }
+            else
+            {
+                array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
+                indexOfSubArrayTwo++;
+            }
         }
         else
         {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
+            if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
+            {
+                array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
+                indexOfSubArrayOne++;
+            }
+            else
+            {
+                array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
+                indexOfSubArrayTwo++;
+            }
         }
         indexOfMergedArray++;
     }
@@ -54,15 +84,15 @@ void merge(string* array, int const left, int const mid, int const right)
     delete[] rightArray;
 }
 
-void mergeSort(string* array, int const begin, int const end)
+void mergeSort(string* array, int const begin, int const end, bool isNumericArray)
 {
     if (begin >= end)
         return;
 
     auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
-    merge(array, begin, mid, end);
+    mergeSort(array, begin, mid, isNumericArray);
+    mergeSort(array, mid + 1, end, isNumericArray);
+    merge(array, begin, mid, end, isNumericArray);
 }
 
 void printArray(string* array, int size)
@@ -100,8 +130,27 @@ void readCSVMergeSort(const string& filename)
 
     auto arr_size = i;
 
-    mergeSort(values, 0, arr_size - 1);
+    bool isNumericArray = true;
+    for (int j = 0; j < arr_size; j++)
+    {
+        if (!isNumeric(values[j]))
+        {
+            isNumericArray = false;
+            break;
+        }
+    }
+
+    mergeSort(values, 0, arr_size - 1, isNumericArray);
 
     cout << "\nSorted contents are:\n";
     printArray(values, arr_size);
+}
+
+
+int main() {
+    string filename = "file.txt"; // Replace with the actual filename
+
+    readCSVMergeSort(filename);
+
+    return 0;
 }
