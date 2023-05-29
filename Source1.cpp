@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <vector>
 #include <ctime>
 #include <iomanip>
 #include <chrono>
@@ -37,6 +36,7 @@ class Favorite{
             this -> nextAdd = NULL;
             this -> prevAdd = NULL;
         }
+
 
         void addToFavorite(string name, string institution){
             Favorite* newNode = new Favorite(name, institution);
@@ -101,7 +101,7 @@ class Feedback
         this->fbreply = "N/A";
         this->fbreply_date = "N/A";
     }
-
+};
 
     //call using 
     //generateid generator; 
@@ -120,8 +120,8 @@ class Feedback
                 counter++;
                 return feedbackID;
             }
-    }
-};
+    };
+
 
 class University 
 {
@@ -213,6 +213,8 @@ public:
 		string IsrRank, string IrnSCore, string IrnRank, string GerScore, string GerRank, string ScoreScaled);
     void Binary_Search();
     void Inter_Search();
+    void Reg_Binary_Search();
+    void Reg_Inter_Search();
     void Merge_Sort();
     void Quick_Sort();
     void display_univinfo();
@@ -383,7 +385,17 @@ void University :: Binary_Search()
     //
 }
 
+void University :: Reg_Binary_Search()
+{
+    //
+}
+
 void University :: Inter_Search()
+{
+    //
+}
+
+void University :: Reg_Inter_Search()
 {
     //
 }
@@ -915,20 +927,20 @@ int main()
 
 
 
-    int counter = 0;
-    int arr[5], i, elem;
-    cout << "Enter 5 Array Elements: ";
-    for (i = 0; i < 5; i++)
-        cin >> arr[i];
+    // int counter = 0;
+    // int arr[5], i, elem;
+    // cout << "Enter 5 Array Elements: ";
+    // for (i = 0; i < 5; i++)
+    //     cin >> arr[i];
 
-    auto arr_size = sizeof(arr) / sizeof(arr[0]);
+    // auto arr_size = sizeof(arr) / sizeof(arr[0]);
 
-    cout << "Given array is \n";
-    printArray(arr, arr_size);
+    // cout << "Given array is \n";
+    // printArray(arr, arr_size);
 
-    mergeSort(arr, 0, arr_size - 1);
+    // mergeSort(arr, 0, arr_size - 1);
 
-    cout << "\nSorted array is \n";
-    printArray(arr, arr_size);
-    return 0;
+    // cout << "\nSorted array is \n";
+    // printArray(arr, arr_size);
+    // return 0;
 }
