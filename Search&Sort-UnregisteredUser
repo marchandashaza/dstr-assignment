@@ -8,8 +8,15 @@ void static SearchUniversities() {
 	cin >> search;
 
 	if (search == 1) {
-		\\d BinarySearch();
 		
+		string target;
+		
+		cout << "Welcome to the Binary Search Menu!";
+		cout << "Please enter the university name: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		getline(cin, target);
+		NormalBinarySearch(univDLL.head, target)
 	}
 
 	else if (search == 2) {
@@ -22,14 +29,7 @@ void static SearchUniversities() {
 		void SearchUniversities();
 	}
 
-}
 
-void static BinarySearch() {
-	int Choice;
-	cout << "\n " << endl;
-
-
-}
 
 void static InterpolationSearch() {
 	int choice;
