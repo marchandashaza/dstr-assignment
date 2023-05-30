@@ -1030,11 +1030,11 @@ void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin
 
 		switch(Menu) {
 			case 1:
-				void SignUp();
+				user->SignUp();
 				break;
 
 			case 2:
-				void Login();
+				user->Login();
 				break;
 
 			case 3:
@@ -1042,12 +1042,44 @@ void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin
 				break;
 
 			case 4:
-				void SearchUniversity();
-				break;
+				int option;
+                cout << "Choose a searching algorithm" << endl;
+                cout << "1. Binary Search" << endl;
+                cout << "2. Interpolation Search" << endl;
+                cin >> option;
+                switch (option)
+                {
+                    case 1:
+                        uni -> Binary_Search();
+                        break;
+                    case 2:
+                        uni -> Inter_Search();
+                        break;
+                    default:
+                        cout << "Invalid choice" << endl;
+                        break;
+                }
 
 			case 5:
-				void SortUniversities();
-				break;
+				// void SortUniversities();
+				// break;
+                int choice;
+                cout << "Choose a sorting algorithm" << endl;
+                cout << "1. Merge Sort" << endl;
+                cout << "2. Quick Sort" << endl;
+                cin >> choice;
+                switch (choice)
+                {
+                    case 1:
+                        //
+                        break;
+                    case 2:
+                        //
+                        break;
+                    default:
+                        cout << "Invalid choice" << endl;
+                        break;
+                }
 
 			case 6:
 				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
