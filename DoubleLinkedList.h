@@ -5,7 +5,6 @@
 using namespace std;
 
 template <class Node>
-
 class DoubleLinkedList {  
 public:
     Node* head;
