@@ -1,11 +1,8 @@
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
 using namespace std;
 
 template <class Node>
-class DoubleLinkedList {  
+class DoubleLinkedList {
 public:
     Node* head;
     Node* tail;
@@ -73,15 +70,15 @@ public:
         }
     }
 
-    void display() {
+    void Display() {
         Node* current = head;
         while (current != nullptr) 
         {
             current->display();
-			// cout << endl;		
-            current = current->nextAdd;
+
+			current = current->nextAdd;
         }
-        cout << "List ends" << endl;
+        std::cout << "List ends" << std::endl;
     }
 
 private:

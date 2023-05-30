@@ -1,88 +1,64 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <sstream>
+#include <string>
+
 using namespace std;
 
-// Node structure for linked list
-struct Node {
-    int data;
-    Node* next;
-};
+bool interpolationSearch(const string& filename, const string& searchItem)
+{
+    ifstream file(filename);
+    if (!file) {
+        cout << "Failed to open file: " << filename << endl;
+        return false;
+    }
 
-// Function to insert a new node at the beginning of the linked list
-void insertNode(Node** head, int newData) {
-    Node* newNode = new Node();
-    newNode->data = newData;
-    newNode->next = (*head);
-    (*head) = newNode;
-}
+    string line;
+    int left = 0;
+    int right = 0;
+    bool found = false;
+    bool firstFound = true; // Variable to track the first occurrence
 
-// Function to perform interpolation search on a linked list
-Node* interpolationSearch(Node* head, int target) {
-    Node* start = head;
-    Node* end = NULL;
+    // Determine the range of the file
+    file.seekg(0, ios::end);
+    int fileSize = file.tellg();
+    if (fileSize > 0) {
+        right = (fileSize - 1) / sizeof(char);
+    } else {
+        file.close();
+        return false;
+    }
 
-    while (start != end && target >= start->data && target <= end->data) {
-        // Estimate the position of the target value
-        double position = start->data + ((double)(target - start->data) / (end->data - start->data)) * (end - start);
+    while (left <= right) {
+        int mid = left + ((right - left) * (searchItem.length())) / fileSize;
 
-        // Convert position to an integer index
-        int index = static_cast<int>(position);
+        file.seekg(mid, ios::beg);
 
-        // Traverse to the estimated position
-        Node* current = start;
-        for (int i = 0; i < index; i++) {
-            if (current == NULL)
-                break;
-            current = current->next;
+        // Skip until the next newline character
+        char c;
+        while (file.get(c) && c != '\n') {
         }
 
-        if (current == NULL)
-            return NULL;
+        getline(file, line);
+        stringstream ss(line);
+        string value;
 
-        if (current->data == target)
-            return current;
+        getline(ss, value, ',');
 
-        if (current->data < target)
-            start = current->next;
-        else
-            end = current->next;
+        if (value == searchItem) {
+            if (firstFound) {
+                cout << "Item found in the CSV file:" << endl;
+                firstFound = false;
+            }
+            cout << line << endl;
+            found = true;
+        } else if (value < searchItem) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
 
-    return NULL; // Return NULL if target is not found
+    file.close();
+    return found;
 }
-
-// Function to print the linked list
-void printList(Node* node) {
-    while (node != NULL) {
-        cout << node->data << " ";
-        node = node->next;
-    }
-    cout << endl;
-}
-
-// int main() {
-//     Node* head = NULL;
-
-//     // Insert elements into the linked list
-//     insertNode(&head, 2);
-//     insertNode(&head, 5);
-//     insertNode(&head, 8);
-//     insertNode(&head, 12);
-//     insertNode(&head, 16);
-//     insertNode(&head, 18);
-
-//     cout << "Linked List: ";
-//     printList(head);
-
-//     int target = 12;
-//     Node* result = interpolationSearch(head, target);
-
-//     if (result != NULL)
-//         cout << "Element " << target << " found in the linked list." << endl;
-//     else
-//         cout << "Element " << target << " not found in the linked list." << endl;
-
-//     return 0;
-// }

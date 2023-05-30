@@ -15,50 +15,69 @@
 using namespace std;
 
 
-class Favorite{
+class Favorite
+{
     public:
-        string name;
+        string username;
         string institution;
         Favorite*nextAdd;
         Favorite*prevAdd;
         DoubleLinkedList<Favorite>favDLL;
 
         Favorite(string name, string institution) {
-            this -> name = name;
+            this -> username = name;
             this -> institution = institution;
             this -> nextAdd = NULL;
             this -> prevAdd = NULL;
         }
 
         Favorite(){
-            this -> name = "";
+            this -> username = "";
             this -> institution = "";
             this -> nextAdd = NULL;
             this -> prevAdd = NULL;
         }
 
 
-        void addToFavorite(string name, string institution){
-            Favorite* newNode = new Favorite(name, institution);
+        void addToFavorite(string username, string institution){
+            Favorite* newNode = new Favorite(username, institution);
             favDLL.InsertEnd(newNode);
         }
 
         void addToFile(){
             ofstream file("favorite.csv",std::ios::app);
             if (file.is_open()){
-                Favorite*current = favDLL.tail;
+                Favorite*current = favDLL.head;
                 while (current != NULL)
                 {
-                    cout << "Name: " << current->name << endl;
+                    cout << "Name: " << current->username << endl;
                     cout << "Favourited Institutions: " << current->institution <<endl;
 
-                    file << current -> name << ',';
+                    file << current -> username << ',';
                     file << current -> institution << endl;
 
                     current = current -> nextAdd;
                 }
-                cout << "End of favourited institutions" << endl; 
+                cout << "Update file" << endl; 
             }
+            file.close();
+        }
+        
+        void display() 
+        {
+            cout<< left << this -> username << ":";
+            cout<< this -> institution << endl;
+        }
+
+        void display_fav()
+        {
+            favDLL.Display();
+        }
+
+        void header()
+        {
+            cout<< left << this -> username << ":";
+            cout<< this -> institution << endl;
         }
 };
 
@@ -101,27 +120,122 @@ class Feedback
         this->fbreply = "N/A";
         this->fbreply_date = "N/A";
     }
-};
 
-    //call using 
-    //generateid generator; 
-    //std::string feedbackID = generator.generatefeedbackid();
-    //std::cout << feedbackID << std::end1;
-    class generateid
+    void setfbreply() 
     {
-        private:
-            int counter;
+        this->fbreply = fbreply;
+    }
 
-        public:
-            generateid():counter(1){}
-            std::string generatefeedbackid(){
-                std::string feedbackID = "FB" + std::to_string(counter);
-                feedbackID = feedbackID.insert(2, std::string(3-std::to_string(counter).length(), '0'));
-                counter++;
-                return feedbackID;
+    string getfbreply()
+    {
+        return this->fbreply;
+    }
+
+    void setfbreply_date()
+    {
+        this->fbreply_date = fbreply_date;
+    }
+
+    string getfbreply_date()
+    {
+        return this->fbreply_date;
+    }
+
+    void generateFeedbackID(int& counter, std::string& feedbackID)
+    {
+    feedbackID = "FB" + std::to_string(counter);
+    feedbackID = feedbackID.insert(2, std::string(3 - std::to_string(counter).length(), '0'));
+    counter++;
+    }
+  
+    std::string fbtime()
+    {
+        std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        std::tm* currentTm = std::localtime(&currentTime);
+        
+        int day = currentTm->tm_mday;
+        int month = currentTm->tm_mon + 1; 
+        int year = currentTm->tm_year + 1900; 
+        int hour = currentTm->tm_hour;
+        int minute = currentTm->tm_min;
+        int second = currentTm->tm_sec;
+
+        std::stringstream buffer;
+        buffer << std::setfill('0');
+        buffer << std::setw(2) << day << '/' << std::setw(2) << month << '/' << year << ' ';
+        buffer << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
+        
+        return buffer.str();
+    }
+
+    void addfb(string& feedbackID, string username, string institution, string feedback)
+    {
+        int counter = 1;
+        generateFeedbackID(counter, feedbackID);
+        string FbId = feedbackID;
+        string fbdate = fbtime();
+        addToList(FbId, username, institution, feedback, fbdate, this->fbreply, this->fbreply_date);
+    }
+    void addToList(string FbId, string username, string institution, string feedback, string fbdate, string fbreply, string fbreply_date)
+    {
+        Feedback* newNode = new Feedback(FbId, username, institution, feedback, fbdate, fbreply, fbreply_date);
+        fbDLL.InsertEnd(newNode);
+    }
+    void addToFile(){
+            ofstream file("feedback.csv",std::ios::app);
+            if (file.is_open()){
+                Feedback*current = fbDLL.head;
+                while (current != NULL)
+                {
+                    cout << "Feedback ID: " << current->FbId << endl;
+                    cout << "Username: " << current->username <<endl;
+                    cout << "Institution: " << current->institution << endl;
+                    cout << "Feedback: " << current->feedback <<endl;
+                    cout << "Feedback Date: " << current->fbdate << endl;
+                    cout << "Reply: " << current->fbreply <<endl;
+                    cout << "Reply Date: " << current->fbreply_date << endl;
+
+                    file << current -> FbId << ',';
+                    file << current -> username << ',';
+                    file << current -> institution << ',';
+                    file << current -> feedback << ',';
+                    file << current -> fbdate << ',';
+                    file << current -> fbreply << ',';
+                    file << current -> fbreply_date << endl;
+
+                    current = current -> nextAdd;
+                }
+                cout << "Update file" << endl; 
             }
-    };
+            file.close();
+        }
+    void display() 
+        {
+            cout<< left << this->FbId << ":";
+            cout<< this->username << ":";
+            cout<< this->institution << ":";
+            cout<< this->feedback << ":";
+            cout<< this->fbdate << ":";
+            cout<< this->fbreply << ":";
+            cout<< this->fbreply_date << endl;
+        }
+    void display_feedback()
+        {
+            fbDLL.Display();
+        }
 
+    void header()
+        {
+            cout<< left << this->FbId << ":";
+            cout<< this->username << ":";
+            cout<< this->institution << ":";
+            cout<< this->feedback << ":";
+            cout<< this->fbdate << ":";
+            cout<< this->fbreply << ":";
+            cout<< this->fbreply_date << endl;
+        }
+};
 
 class University 
 {
@@ -437,12 +551,12 @@ void University :: display()
     cout << "International Research Network Rank: " << IrnRank << endl;
     cout << "Employment Outcome Score: " << GerScore << endl;
     cout << "Employment Outcome Rank: " << GerRank << endl;
-    cout << "Score Scaled: " << GerScore << endl; 
+    cout << "Score Scaled: " << GerScore << endl << endl;
 }
 
 void University :: display_univinfo()
 {
-    univDLL.display();
+    univDLL.Display();
 }
 
 class Admin {
@@ -664,7 +778,7 @@ class RegisteredUser {
 public:
     void displayMenu() {
         int choice;
-        User user;
+
         do {
             std::cout << "=== Main Menu ===" << std::endl;
             std::cout << "1. Display University Academic Ranking" << std::endl;
@@ -827,52 +941,7 @@ private:
 	string password;
 
 public:
-	void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin * admin, Favorite * Favorite, Feedback * feedb) {
-		int Menu;
-		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
-		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
-		cout << "\n ===========================================================" << endl;
-		cout << "\n 1. Sign Up" << endl;
-		cout << "\n 2. Log In" << endl;
-		cout << "\n 3. View Universities" << endl;
-		cout << "\n 4. Search University" << endl;
-		cout << "\n 5. Sort Universities" << endl;
-		cout << "\n 6. Exit" << endl;
-		cout << "\n Please Input your Selection (1-5):  " << endl;
-		cin >> Menu;
-
-
-		switch(Menu) {
-			case 1:
-				void SignUp();
-				break;
-
-			case 2:
-				void Login();
-				break;
-
-			case 3:
-				uni->display_univinfo();
-				break;
-
-			case 4:
-				void SearchUniversity();
-				break;
-
-			case 5:
-				void SortUniversities();
-				break;
-
-			case 6:
-				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
-				return;
-
-			default:
-				cout << "The Selection is Invalid, Please Select other Options" << endl;
-
-		}
-
-	}
+	
 
 	void static SignUp() {
 
@@ -944,109 +1013,52 @@ public:
 
 };
 
-
-struct UserNode {
-    string name;
-    string password;
-};
-
-// void updatePassword(const string& filename) {
-//     DoubleLinkedList<UserNode> userNodeDLL;
-//     ifstream file(filename);
-    
-//     if (!file) {
-//         cout << "Failed to open file: " << filename << endl;
-//         return;
-//     }
-    
-//     UserNode userNode;
-//     string line;
-    
-//     // Read and parse the file
-//     while (getline(file, line)) {
-//         size_t pos = line.find(", ");
-//         if (pos != string::npos) {
-//             userNode.name = line.substr(0, pos);
-//             userNode.password = line.substr(pos + 2);
-//             userNodeDLL.push_back(userNode);
-//         }
-//     }
-    
-//     file.close();
-    
-//     // Ask for the name of the user to update
-//     string nameToUpdate;
-//     cout << "Enter the name of the user to update: ";
-//     getline(cin, nameToUpdate);
-    
-//     // Find the user to update
-//     bool found = false;
-//     for (User& u : users) {
-//         if (u.name == nameToUpdate) {
-//             found = true;
-//             cout << "Enter the new password for " << u.name << ": ";
-//             getline(cin, u.password);
-//             break;
-//         }
-//     }
-    
-//     if (!found) {
-//         cout << "User not found." << endl;
-//         return;
-//     }
-    
-//     // Write the updated users to the file
-//     ofstream outFile(filename);
-//     if (!outFile) {
-//         cout << "Failed to open file: " << filename << endl;
-//         return;
-//     }
-    
-//     for (const User& u : users) {
-//         outFile << u.name << ", " << u.password << endl;
-//     }
-    
-//     outFile.close();
-    
-//     cout << "File updated successfully." << endl;
-// }
-
-// void changeUserPassword(){
-//     const string filename = "userdata.txt";
-//     updatePassword(filename);
-// }
+void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin * admin, Favorite * Favorite, Feedback * feedb) {
+		int Menu;
+		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
+		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
+		cout << "\n ===========================================================" << endl;
+		cout << "\n 1. Sign Up" << endl;
+		cout << "\n 2. Log In" << endl;
+		cout << "\n 3. View Universities" << endl;
+		cout << "\n 4. Search University" << endl;
+		cout << "\n 5. Sort Universities" << endl;
+		cout << "\n 6. Exit" << endl;
+		cout << "\n Please Input your Selection (1-5):  " << endl;
+		cin >> Menu;
 
 
-void displayMergeSortedUserData(){
-    const string filename = "userdata.csv";
-    readCSVMergeSort(filename);
-}
+		switch(Menu) {
+			case 1:
+				void SignUp();
+				break;
 
-void displayQuickSortedUserData(){
-    string filename = "userdata.csv";
-    // readCSVQuickSort(filename);
-}
+			case 2:
+				void Login();
+				break;
 
-void displayMergeSortedUserFeedback(){
-    const string filename = "feedback.csv";
-    readCSVMergeSort(filename);
-}
+			case 3:
+				uni->display_univinfo();
+				break;
 
-void displayQuickSortedUserFeedback(){
-    const string filename = "feedback.csv";
-    // readCSVQuickSort(filename);
-}
+			case 4:
+				void SearchUniversity();
+				break;
 
-void displayMergeSortedUserFav(){
-    const string filename = "favorite.csv";
-    // readCSVMergeSort(filename);
-}
+			case 5:
+				void SortUniversities();
+				break;
 
-void displayQuickSortedUserFav(){
-    const string filename = "favorite.csv";
-    // readCSVQuickSort(filename);
-}
+			case 6:
+				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
+				return;
 
+			default:
+				cout << "The Selection is Invalid, Please Select other Options" << endl;
+
+		}
+
+	}
 
 int main()
 {
@@ -1101,8 +1113,8 @@ int main()
         }
     }
 
-    User userClass;
-    userClass.UserMainMenu(uni, user, reguser, admin, fav, feedb);
+
+    UserMainMenu(uni, user, reguser, admin, fav, feedb);
 
     // cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
     // void display_univinfo();
