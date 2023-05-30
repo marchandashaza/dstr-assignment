@@ -660,133 +660,6 @@ void displayQuickSortedUserFav(){
 }
 
 };
-
-class User{
-
-private:
-
-	string username;
-	string password;
-
-public:
-	void UserMainMenu() {
-		int Menu;
-		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
-		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
-		cout << "\n ===========================================================" << endl;
-		cout << "\n 1. Sign Up" << endl;
-		cout << "\n 2. Log In" << endl;
-		cout << "\n 3. View Universities" << endl;
-		cout << "\n 4. Search University" << endl;
-		cout << "\n 5. Sort Universities" << endl;
-		cout << "\n 6. Exit" << endl;
-		cout << "\n Please Input your Selection (1-5):  " << endl;
-		cin >> Menu;
-
-
-		switch(Menu) {
-			case 1:
-				void SignUp();
-				break;
-
-			case 2:
-				void Login();
-				break;
-
-			case 3:
-				void ViewUniversities();
-				break;
-
-			case 4:
-				void SearchUniversity();
-				break;
-
-			case 5:
-				void SortUniversities();
-				break;
-
-			case 6:
-				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
-				return;
-
-			default:
-				cout << "The Selection is Invalid, Please Select other Options" << endl;
-
-		}
-
-	}
-
-	void static SignUp() {
-
-		string UserUsername, UserPassword;
-
-
-		cout << "Welcome Future Member!" << endl;
-		cout << "Please Enter Your Desired Username: " << endl;
-		cin >> UserUsername;
-		cout << "Please Enter Your Desired Password: " << endl;
-		cin >> UserPassword;
-
-		ofstream file("userdata.csv", ios::app);
-		if (file.is_open()) {
-
-			file << UserUsername << "," << UserPassword << "\n";
-			file.close();
-			cout << "The Sign Up is Successful, Welcome New Member!" << endl;
-
-		}
-
-		else {
-			cerr << "The Sign Up Process is Unsuccessful, Please Try Again!" << endl;
-
-		}
-
-	}
-
-	void static Login() {
-
-		string UsernameEntered, PasswordEntered;
-		cout << "Welcome to the Login Menu! Please Enter Your Credentials!" << endl;
-		cout << "Please Enter Your Username: ";
-		cin >> UsernameEntered;
-		cout << "Please Enter Your Password: ";
-		cin >> PasswordEntered;
-
-		ifstream file("userdata.csv");
-		if (file.is_open()) {
-			string line;
-			while (getline(file, line)) {
-				stringstream ss(line);
-				string Username, Password;
-				getline(ss, Username, ',');
-				getline(ss, Password, ',');
-
-				if (UsernameEntered == Username && PasswordEntered == Password) {
-					file.close();
-					return;
-				}
-
-			}
-			file.close();
-
-		}
-        else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
-            Admin admin;
-            admin.adminmenu();
-            file.close();
-
-        }
-		else {
-			cerr << "Login Failed!Please Re-Enter the Credentials!" << endl;
-		}
-
-		return;
-
-	}
-
-};
-
-
 class RegisteredUser {
 public:
     void displayMenu() {
@@ -944,6 +817,130 @@ private:
         std::cout << "\n" << std::endl;
 
     }
+
+};
+class User{
+
+private:
+
+	string username;
+	string password;
+
+public:
+	void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin * admin, Favorite * Favorite, Feedback * feedb) {
+		int Menu;
+		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
+		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
+		cout << "\n ===========================================================" << endl;
+		cout << "\n 1. Sign Up" << endl;
+		cout << "\n 2. Log In" << endl;
+		cout << "\n 3. View Universities" << endl;
+		cout << "\n 4. Search University" << endl;
+		cout << "\n 5. Sort Universities" << endl;
+		cout << "\n 6. Exit" << endl;
+		cout << "\n Please Input your Selection (1-5):  " << endl;
+		cin >> Menu;
+
+
+		switch(Menu) {
+			case 1:
+				void SignUp();
+				break;
+
+			case 2:
+				void Login();
+				break;
+
+			case 3:
+				uni->display_univinfo();
+				break;
+
+			case 4:
+				void SearchUniversity();
+				break;
+
+			case 5:
+				void SortUniversities();
+				break;
+
+			case 6:
+				cout << "Thank You for Visiting the Universities Ranking System, Have a Nice Day!" << endl;
+				return;
+
+			default:
+				cout << "The Selection is Invalid, Please Select other Options" << endl;
+
+		}
+
+	}
+
+	void static SignUp() {
+
+		string UserUsername, UserPassword;
+
+
+		cout << "Welcome Future Member!" << endl;
+		cout << "Please Enter Your Desired Username: " << endl;
+		cin >> UserUsername;
+		cout << "Please Enter Your Desired Password: " << endl;
+		cin >> UserPassword;
+
+		ofstream file("userdata.csv", ios::app);
+		if (file.is_open()) {
+
+			file << UserUsername << "," << UserPassword << "\n";
+			file.close();
+			cout << "The Sign Up is Successful, Welcome New Member!" << endl;
+
+		}
+
+		else {
+			cerr << "The Sign Up Process is Unsuccessful, Please Try Again!" << endl;
+
+		}
+
+	}
+
+	void static Login() {
+
+		string UsernameEntered, PasswordEntered;
+		cout << "Welcome to the Login Menu! Please Enter Your Credentials!" << endl;
+		cout << "Please Enter Your Username: ";
+		cin >> UsernameEntered;
+		cout << "Please Enter Your Password: ";
+		cin >> PasswordEntered;
+
+		ifstream file("userdata.csv");
+		if (file.is_open()) {
+			string line;
+			while (getline(file, line)) {
+				stringstream ss(line);
+				string Username, Password;
+				getline(ss, Username, ',');
+				getline(ss, Password, ',');
+
+				if (UsernameEntered == Username && PasswordEntered == Password) {
+					file.close();
+					return;
+				}
+
+			}
+			file.close();
+
+		}
+        else if (UsernameEntered == "Admin" && PasswordEntered == "Password") {
+            Admin admin;
+            admin.adminmenu();
+            file.close();
+
+        }
+		else {
+			cerr << "Login Failed!Please Re-Enter the Credentials!" << endl;
+		}
+
+		return;
+
+	}
 
 };
 
@@ -1105,7 +1102,7 @@ int main()
     }
 
     User userClass;
-    userClass.UserMainMenu();
+    userClass.UserMainMenu(uni, user, reguser, admin, fav, feedb);
 
     // cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
     // void display_univinfo();
