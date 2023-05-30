@@ -108,17 +108,18 @@ private:
     }
 
     void static BinarySearch() {
-        //int Choice;
-        //std::cout << "\n " << std::endl;
-    
-    
 	    string input;
 	    int opt, type;
-	
+	    cout << "\n Welcome to the Binary Search Menu" << endl;
+	    cout << "\n How do you want to search the universities?" << endl;
 	    cout << " 1. Rank " << endl;
 	    cout << " 2. Institution " << endl;
-        cin >> opt;
-        cin.clear();
+	    cout << " 3. Location Code " << endl;
+	    cout << " 4. Location " << endl;
+	    cout << " 5. Academic Reputation Rank " << endl;
+	    cout << " 6. Employee Reputation Rank " << endl;
+            cin >> opt;
+            cin.clear();
 
         if (opt == 1){
             type = 1;
