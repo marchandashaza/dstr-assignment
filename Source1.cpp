@@ -1089,8 +1089,6 @@ void UserMainMenu(University * uni, User * user, RegisteredUser * reguser, Admin
                 }
 
 			case 5:
-				// void SortUniversities();
-				// break;
                 int choice;
                 cout << "Choose a sorting algorithm" << endl;
                 cout << "1. Merge Sort" << endl;
