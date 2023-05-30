@@ -64,6 +64,33 @@ class Favorite{
         }
 };
 
+class generateid
+{
+private:
+    int counter;
+
+public:
+    generateid() : counter(1) {}
+
+    std::string generatefeedbackid()
+    {
+        std::string feedbackID = "FB" + std::to_string(counter);
+        feedbackID = feedbackID.insert(2, std::string(3 - std::to_string(counter).length(), '0'));
+        counter++;
+        return feedbackID;
+    }
+};
+
+void displayFeedbackID (){
+    generateid generator;
+    std::string id = generator.generatefeedbackid();
+    
+    std::cout << "Generated ID: " << id << std::endl;
+
+    
+}
+
+
 class Feedback
 {
     public:
@@ -103,26 +130,23 @@ class Feedback
         this->fbreply = "N/A";
         this->fbreply_date = "N/A";
     }
+    
+    void insertfb(string username, string institution, string feedback)
+    {
+        void displayFeedbackID();
+
+        std::ofstream file("ids.txt", std::ios::app);
+        if (file.is_open()) {
+            file << id << std::endl;
+            file.close();
+            std::cout << "ID added to the file." << std::endl;
+        } else {
+            std::cout << "Failed to open the file." << std::endl;
+        }
+    }
 };
 
-    //call using 
-    //generateid generator; 
-    //std::string feedbackID = generator.generatefeedbackid();
-    //std::cout << feedbackID << std::end1;
-    class generateid
-    {
-        private:
-            int counter;
-
-        public:
-            generateid():counter(1){}
-            std::string generatefeedbackid(){
-                std::string feedbackID = "FB" + std::to_string(counter);
-                feedbackID = feedbackID.insert(2, std::string(3-std::to_string(counter).length(), '0'));
-                counter++;
-                return feedbackID;
-            }
-    };
+   
 
 
 class University 
