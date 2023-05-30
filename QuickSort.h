@@ -4,6 +4,8 @@
 #include <string>
 using namespace std;
 
+// template <class node>
+
 struct Node {
     string data;
     struct Node* next;
