@@ -1,0 +1,240 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+using namespace std;
+
+// Structure to hold university data
+struct University {
+    string name;
+    int ranking;
+    string institution;
+    string location;
+    string locationCode;
+    int academicReputation;
+    int employerReputation;
+    University* next;
+    University* prev;
+};
+
+// Function to insert a new node at the end of the doubly linked list
+template <typename T>
+void insertNode(University*& head, University*& tail, T data) {
+    University* newNode = new University;
+    newNode->name = data.name;
+    newNode->ranking = data.ranking;
+    newNode->institution = data.institution;
+    newNode->location = data.location;
+    newNode->locationCode = data.locationCode;
+    newNode->academicReputation = data.academicReputation;
+    newNode->employerReputation = data.employerReputation;
+    newNode->next = nullptr;
+    newNode->prev = nullptr;
+
+    if (head == nullptr) {
+        head = newNode;
+        tail = newNode;
+    } else {
+        newNode->prev = tail;
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+// Function to display the doubly linked list
+template <typename T>
+void displayList(University* head) {
+    University* current = head;
+
+    while (current != nullptr) {
+        cout << "University: " << current->name << endl;
+        cout << "Ranking: " << current->ranking << endl;
+        cout << "Institution: " << current->institution << endl;
+        cout << "Location: " << current->location << endl;
+        cout << "Location Code: " << current->locationCode << endl;
+        cout << "Academic Reputation: " << current->academicReputation << endl;
+        cout << "Employer Reputation: " << current->employerReputation << endl;
+        cout << endl;
+
+        current = current->next;
+    }
+}
+
+// Function to merge two sorted doubly linked lists
+template <typename T>
+University* merge(University* left, University* right) {
+    if (left == nullptr)
+        return right;
+    if (right == nullptr)
+        return left;
+
+    University* result;
+
+    if (left->ranking <= right->ranking) {
+        result = left;
+        result->next = merge(left->next, right);
+        result->next->prev = result;
+    } else {
+        result = right;
+        result->next = merge(left, right->next);
+        result->next->prev = result;
+    }
+
+    return result;
+}
+
+// Function to split the doubly linked list into two halves
+template <typename T>
+void split(University* head, University*& left, University*& right) {
+    University* slow = head;
+    University* fast = head->next;
+
+    while (fast != nullptr) {
+        fast = fast->next;
+        if (fast != nullptr) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    left = head;
+    right = slow->next;
+    slow->next = nullptr;
+    if (right != nullptr)
+        right->prev = nullptr;
+}
+
+// Function to perform merge sort on the doubly linked list
+template <typename T>
+void mergeSort(University*& head) {
+    if (head == nullptr || head->next == nullptr)
+        return;
+
+    University* left;
+    University* right;
+
+    split(head, left, right);
+
+    mergeSort(left);
+    mergeSort(right);
+
+    head = merge(left, right);
+}
+
+// Function to perform interpolation search on the doubly linked list
+template <typename T>
+University* interpolationSearch(University* head, const T& key) {
+    if (head == nullptr)
+        return nullptr;
+
+    University* low = head;
+    University* high = nullptr;
+
+    // Find the highest node in the list
+    for (University* temp = head; temp != nullptr; temp = temp->next)
+        high = temp;
+
+    while (low != nullptr && high != nullptr && key >= low->ranking && key <= high->ranking) {
+        if (low->ranking == high->ranking) {
+            if (low->ranking == key)
+                return low;
+            else
+                return nullptr;
+        }
+
+        // Perform interpolation
+        int pos = low->ranking + ((key - low->ranking) * (high->ranking - low->ranking)) / (high->ranking - low->ranking);
+
+        // Move to the desired position
+        University* temp = low;
+        while (temp != nullptr && temp->ranking < pos) {
+            low = temp;
+            temp = temp->next;
+        }
+
+        // If the key is found, return the node
+        if (temp != nullptr && temp->ranking == key)
+            return temp;
+
+        // If the key is less than the current node's ranking, move to the previous node
+        if (temp != nullptr && temp->ranking > key)
+            high = temp->prev;
+        else // If the key is greater than the current node's ranking, move to the next node
+            low = temp;
+    }
+
+    return nullptr;
+}
+
+int main() {
+    ifstream file("2023 QS World University Ranking.csv");
+    string line;
+
+    // Skip the header line
+    getline(file, line);
+
+    // Doubly linked list to hold the university data
+    University* head = nullptr;
+    University* tail = nullptr;
+
+    // Read data from the file and insert into the doubly linked list
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string name, institution, location, locationCode;
+        int ranking, academicReputation, employerReputation;
+
+        getline(ss, name, ',');
+        ss >> ranking;
+        ss.ignore();
+        getline(ss, institution, ',');
+        getline(ss, location, ',');
+        getline(ss, locationCode, ',');
+        ss >> academicReputation;
+        ss.ignore();
+        ss >> employerReputation;
+
+        University u;
+        u.name = name;
+        u.ranking = ranking;
+        u.institution = institution;
+        u.location = location;
+        u.locationCode = locationCode;
+        u.academicReputation = academicReputation;
+        u.employerReputation = employerReputation;
+
+        insertNode(head, tail, u);
+    }
+
+    // Sort the doubly linked list using merge sort
+    mergeSort(head);
+
+    // Test the interpolation search function
+    int key;
+    cout << "Enter the university ranking to search: ";
+    cin >> key;
+
+    University* result = interpolationSearch(head, key);
+
+    if (result != nullptr) {
+        cout << "University: " << result->name << endl;
+        cout << "Ranking: " << result->ranking << endl;
+        cout << "Institution: " << result->institution << endl;
+        cout << "Location: " << result->location << endl;
+        cout << "Location Code: " << result->locationCode << endl;
+        cout << "Academic Reputation: " << result->academicReputation << endl;
+        cout << "Employer Reputation: " << result->employerReputation << endl;
+    } else {
+        cout << "University not found." << endl;
+    }
+
+    // Free the memory allocated for the doubly linked list
+    University* current = head;
+    while (current != nullptr) {
+        University* next = current->next;
+        delete current;
+        current = next;
+    }
+
+    return 0;
+}
