@@ -776,7 +776,7 @@ void displayQuickSortedUserFav(){
 };
 class RegisteredUser {
 public:
-    void displayMenu() {
+    void displayMenu(University * uni, Admin * admin, Favorite * Favorite, Feedback * feedb) {
         int choice;
 
         do {
@@ -785,28 +785,49 @@ public:
             std::cout << "2. Display University Faculty and Student Ratio Score" << std::endl;
             std::cout << "3. Display University Employee Reputation Score" << std::endl;
             std::cout << "4. Search University" << std::endl;
-            std::cout << "5. Logout" << std::endl;
+            // std::cout << "5. Logout" << std::endl;
             std::cout << "6. Exit" << std::endl;
             std::cout << "Enter your choice: ";
             std::cin >> choice;
 
             switch (choice) {
             case 1:
-                SortUniversities();
-                break;
+                int op;
+                cout << "Choose a sorting algorithm" << endl;
+                cout << "1. Merge Sort" << endl;
+                cout << "2. Quick Sort" << endl;
+                cin >> op;
+                switch (op)
+                {
+                    //
+                }
             case 2:
-                SortUniversities();
-                break;
+                int opt;
+                cout << "Choose a sorting algorithm" << endl;
+                cout << "1. Merge Sort" << endl;
+                cout << "2. Quick Sort" << endl;
+                cin >> opt;
+                switch (opt)
+                {
+                    //
+                }
             case 3:
-                SortUniversities();
-                break;
+                int option;
+                cout << "Choose a sorting algorithm" << endl;
+                cout << "1. Merge Sort" << endl;
+                cout << "2. Quick Sort" << endl;
+                cin >> option;
+                switch (option)
+                {
+                    //
+                }
             case 4:
-                SearchUniversities();
+                uni->Reg_Inter_Search();
                 break;
-            case 5:
-                // user.UserMainMenu();
-                break;
-            case 7:
+            // case 5:
+            //     // user->UserMainMenu();
+            //     // break;
+            case 6:
                 std::cout << "Exiting..." << std::endl;
                 break;
             default:
