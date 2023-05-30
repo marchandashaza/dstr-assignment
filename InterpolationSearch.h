@@ -1,85 +1,139 @@
-#include <iostream>
-using namespace std;
+void InterpolationSearch() {
+    string input;
+    int opt, type;
+    cout << "\nWelcome to the Interpolation Search Menu" << endl;
+    cout << "\nHow do you want to search the universities?" << endl;
+    cout << "1. Rank" << endl;
+    cout << "2. Institution" << endl;
+    cout << "3. Location Code" << endl;
+    cout << "4. Location" << endl;
+    cout << "5. Academic Reputation Rank" << endl;
+    cout << "6. Employer Reputation Rank" << endl;
+    cin >> opt;
+    cin.clear();
 
-// Node structure for linked list
-struct Node {
-    int data;
-    Node* next;
-};
+    if (opt == 1) {
+        type = 1;
+    }
+    else if (opt == 2) {
+        type = 2;
+    }
+    else if (opt == 3) {
+        type = 3;
+    }
+    else if (opt == 4) {
+        type = 4;
+    }
+    else if (opt == 5) {
+        type = 5;
+    }
+    else if (opt == 6) {
+        type = 6;
+    }
+    else {
+        cout << "ERROR" << endl;
+        return;
+    }
 
-// Function to insert a new node at the beginning of the linked list
-void insertNode(Node** head, int newData) {
-    Node* newNode = new Node();
-    newNode->data = newData;
-    newNode->next = (*head);
-    (*head) = newNode;
+    cout << "Enter what to search: ";
+    cin.clear();
+    cin.ignore();
+    getline(cin, input);
+
+    University* result = InterpolationSearch(univDLL.head, input, type);
+
+    if (result != nullptr) {
+        result->display();
+    }
+    else {
+        cout << "UNIVERSITY NOT FOUND" << endl;
+    }
 }
 
-// Function to perform interpolation search on a linked list
-Node* interpolationSearch(Node* head, int target) {
-    Node* start = head;
-    Node* end = NULL;
+template <typename T>
+T* InterpolationSearch(T* head, string target, int type) {
+    T* start = head;
+    T* end = nullptr;
 
-    while (start != end && target >= start->data && target <= end->data) {
-        // Estimate the position of the target value
-        double position = start->data + ((double)(target - start->data) / (end->data - start->data)) * (end - start);
+    switch (type) {
+    case 1:
+    case 5:
+    case 6:
+        while (start != end) {
+            T* mid = InterpolationMidPoint(start, end, stoi(target), type);
+            if (mid->rank == stoi(target)) {
+                return mid;
+            }
+            else if (mid->rank > stoi(target)) {
+                end = mid;
+            }
+            else {
+                start = mid->nextAdd;
+            }
+        }
+        break;
 
-        // Convert position to an integer index
-        int index = static_cast<int>(position);
+    case 2:
+    case 3:
+    case 4:
+        while (start != end) {
+            T* mid = InterpolationMidPoint(start, end, target, type);
+            if (mid->institution == target) {
+                return mid;
+            }
+            else if (mid->institution > target) {
+                end = mid;
+            }
+            else {
+                start = mid->nextAdd;
+            }
+        }
+        break;
 
-        // Traverse to the estimated position
-        Node* current = start;
-        for (int i = 0; i < index; i++) {
-            if (current == NULL)
-                break;
-            current = current->next;
+    default:
+        return nullptr;
+    }
+
+    return nullptr;
+}
+
+template <typename T>
+T* InterpolationMidPoint(T* start, T* end, int target, int type) {
+    double valueRange = 0.0;
+    double fraction = 0.0;
+
+    switch (type) {
+    case 1:
+    case 5:
+    case 6:
+        valueRange = static_cast<double>(end->rank - start->rank);
+        fraction = static_cast<double>(target - start->rank) / valueRange;
+        break;
+
+    default:
+        return nullptr;
+    }
+
+    T* current = start;
+    while (current != end) {
+        double currentFraction = 0.0;
+        switch (type) {
+        case 1:
+        case 5:
+        case 6:
+            currentFraction = static_cast<double>(current->rank - start->rank) / valueRange;
+            break;
+
+        default:
+            return nullptr;
         }
 
-        if (current == NULL)
-            return NULL;
-
-        if (current->data == target)
+        if (currentFraction >= fraction) {
             return current;
+        }
 
-        if (current->data < target)
-            start = current->next;
-        else
-            end = current->next;
+        current = current->nextAdd;
     }
 
-    return NULL; // Return NULL if target is not found
-}
-
-// Function to print the linked list
-void printList(Node* node) {
-    while (node != NULL) {
-        cout << node->data << " ";
-        node = node->next;
-    }
-    cout << endl;
-}
-
-int main() {
-    Node* head = NULL;
-
-    // Insert elements into the linked list
-    insertNode(&head, 2);
-    insertNode(&head, 5);
-    insertNode(&head, 8);
-    insertNode(&head, 12);
-    insertNode(&head, 16);
-    insertNode(&head, 18);
-
-    cout << "Linked List: ";
-    printList(head);
-
-    int target = 12;
-    Node* result = interpolationSearch(head, target);
-
-    if (result != NULL)
-        cout << "Element " << target << " found in the linked list." << endl;
-    else
-        cout << "Element " << target << " not found in the linked list." << endl;
-
-    return 0;
+    return current;
 }
