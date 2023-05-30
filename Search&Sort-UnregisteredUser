@@ -1,78 +1,78 @@
-	void static SearchUniversities() {
+void static SearchUniversities() {
 
-		int search;
-		cout << "\n Hello, welcome to the search menu!" << endl;
-		cout << "\n Please choose which search algorithm you wanted to use!" << endl;
-		cout << "\n 1. Binary Search Algorithm" << endl;
-		cout << "\n 2. Interpolation Search Algorithm" << endl;
-		cin >> search;
+	int search;
+	cout << "\n Hello, welcome to the search menu!" << endl;
+	cout << "\n Please choose which search algorithm you wanted to use!" << endl;
+	cout << "\n 1. Binary Search Algorithm" << endl;
+	cout << "\n 2. Interpolation Search Algorithm" << endl;
+	cin >> search;
 
-		if (search == 1) {
-			void BinarySearch();
-		}
-
-		else if (search == 2) {
-			void InterpolationSearch();
-		}
-
-		else {
-			cout << "\n The number you inserted is invalid!" << endl;
-			cout << "\n please re - enter your choice!" << endl;
-			void SearchUniversities();
-		}
-
-	}
-
-	void static BinarySearch() {
-		int Choice;
-		cout << "\n " << endl;
-
-
-	}
-
-	void static InterpolationSearch() {
-		int choice;
-		cout << "\n" << endl;
-
-	}
-
-	void static SortUniversities() {
-
-		int sort;
-		cout << "\n Hello, welcome to the sort menu!" << endl;
-		cout << "\n Please choose which sort algorithm you wanted to use!" << endl;
-		cout << "\n 1. Merge Sort Algorithm" << endl;
-		cout << "\n 2. Quick Sort Algorithm" << endl;
-		cin >> sort;
-
-		if (sort == 1) {
-			void MergeSort();
-		}
-
-		else if (sort == 2) {
-			void QuickSort();
-		}
-
-		else {
-			cout << "\n The number you inserted is invalid!" << endl;
-			cout << "\n please re - enter your choice!" << endl;
-			void SortUniversities();
-		}
-
-
-	}
-
-	void static MergeSort() {
-  
-    int choice;
-    cout << "\n " << endl;
-
-
-	}
-
-	void static QuickSort() {
-
-  int choice;
-  cout << "\n" << endl;
+	if (search == 1) {
+		\\d BinarySearch();
 		
 	}
+
+	else if (search == 2) {
+		void InterpolationSearch();
+	}
+
+	else {
+		cout << "\n The number you inserted is invalid!" << endl;
+		cout << "\n please re - enter your choice!" << endl;
+		void SearchUniversities();
+	}
+
+}
+
+void static BinarySearch() {
+	int Choice;
+	cout << "\n " << endl;
+
+
+}
+
+void static InterpolationSearch() {
+	int choice;
+	cout << "\n" << endl;
+
+}
+
+void static SortUniversities() {
+	int sort;
+	cout << "\n Hello, welcome to the sort menu!" << endl;
+	cout << "\n Please choose which sort algorithm you wanted to use!" << endl;
+	cout << "\n 1. Merge Sort Algorithm" << endl;
+	cout << "\n 2. Quick Sort Algorithm" << endl;
+	cin >> sort;
+
+	if (sort == 1) {
+		void MergeSort();
+	}
+
+	else if (sort == 2) {
+		void QuickSort();
+	}
+
+	else {
+		cout << "\n The number you inserted is invalid!" << endl;
+		cout << "\n please re - enter your choice!" << endl;
+		void SortUniversities();
+	}
+
+
+}
+
+void static MergeSort() {
+  
+	int choice;
+	cout << "\n " << endl;
+
+
+}
+
+void static QuickSort() {
+
+	int choice;
+	cout << "\n" << endl;
+		
+}
