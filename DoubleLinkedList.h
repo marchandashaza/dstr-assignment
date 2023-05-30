@@ -8,6 +8,8 @@ public:
     Node* tail;
     DoubleLinkedList() {
         head = nullptr;
+        tail = nullptr;
+        size = 0;
     }
 
     void InsertFront(Node* newNode) { 
@@ -40,6 +42,16 @@ public:
 		size++;
 	}
 
+    void pushBack(Node* newNode) {
+        if (head == nullptr) {
+            head = tail = newNode;
+        } else {
+            tail->nextAdd = newNode;
+            newNode->prevAdd = tail;
+            tail = newNode;
+        }
+    }
+    
     void remove(int value) {
         if (head == nullptr) {
             return;
@@ -78,6 +90,22 @@ public:
 			current = current->nextAdd;
         }
         std::cout << "List ends" << std::endl;
+    }
+
+    Node* begin() const {
+        return head;
+    }
+
+    Node* end() const {
+        return nullptr;
+    }
+
+    Node* next(Node* node) const {
+        return node->nextAdd;
+    }
+
+    Node* toNodePtr(Node& node) {
+        return &node;
     }
 
 private:

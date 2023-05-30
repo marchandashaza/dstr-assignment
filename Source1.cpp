@@ -14,7 +14,6 @@
 #pragma once
 using namespace std;
 
-
 class Favorite
 {
     public:
@@ -265,6 +264,7 @@ public:
 	double ScoreScaled;
 	University* nextAdd;
 	University* prevAdd;
+    string data;
 	// SingleLinkedList<University> univSLL;
 	DoubleLinkedList<University> univDLL;
 
@@ -326,7 +326,7 @@ public:
 		string ErScore, string ErRank, string FsrScore, string FsrRank, string CpfScore, string CpfRank, string IfrScore, string IfrRank, string IsrScore,
 		string IsrRank, string IrnSCore, string IrnRank, string GerScore, string GerRank, string ScoreScaled);
     void Binary_Search();
-    void Inter_Search();
+    void InterpolationSearch();
     void Reg_Binary_Search();
     void Reg_Inter_Search();
     void Merge_Sort();
@@ -334,8 +334,26 @@ public:
     void display_univinfo();
     void display();
     bool compareAttributes();
-
+    string attributesOf(string input);
 };
+
+string University::attributesOf(string input){
+    if (input == "rank") {
+		return to_string(this->rank);
+	}
+	else if (input == "institution")
+	{
+		return this->institution;
+	}
+	else if (input == "Location")
+	{
+		return this->Location;
+	}
+	else if (input == "Location_Code")
+	{
+		return this->LocationCode;
+	}
+}
 
 void University :: InsertToEndList(string rank, string institution, string LocationCode, string Location, string ArScore, string ArRank,
 		string ErScore, string ErRank, string FsrScore, string FsrRank, string CpfScore, string CpfRank, string IfrScore, string IfrRank, 
@@ -496,7 +514,30 @@ void University :: InsertToEndList(string rank, string institution, string Locat
 
 void University :: Binary_Search()
 {
-    //
+    string searchItem,input;
+    int opt;
+    cout << "Binary Search Option: " << endl;
+	cout << " 1. Rank " << endl;
+	cout << " 2. Institution " << endl;
+	cout << "Option: ";
+    cin >> opt;
+    switch (opt)
+    {
+    case 1:
+        input = "rank";
+        break;
+    case 2:
+        input = "institution";
+        break;
+    default:
+        break;
+    
+    }
+    // cout << "Enter what to search: " << endl;
+    // cin.ignore();
+    // getline(cin,searchItem);
+    // interpolationSearch<University> IntSearchClass;
+	// IntSearchClass.intSearch(univDLL.head, searchItem, input);
 }
 
 void University :: Reg_Binary_Search()
@@ -504,9 +545,57 @@ void University :: Reg_Binary_Search()
     //
 }
 
-void University :: Inter_Search()
-{
-    //
+void University::InterpolationSearch() {
+    string input;
+    int opt, type;
+    cout << "\nWelcome to the Interpolation Search Menu" << endl;
+    cout << "\nHow do you want to search the universities?" << endl;
+    cout << "1. Rank" << endl;
+    cout << "2. Institution" << endl;
+    cout << "3. Location Code" << endl;
+    cout << "4. Location" << endl;
+    cout << "5. Academic Reputation Rank" << endl;
+    cout << "6. Employer Reputation Rank" << endl;
+    cin >> opt;
+    cin.clear();
+
+    if (opt == 1) {
+        type = 1;
+    }
+    else if (opt == 2) {
+        type = 2;
+    }
+    else if (opt == 3) {
+        type = 3;
+    }
+    else if (opt == 4) {
+        type = 4;
+    }
+    else if (opt == 5) {
+        type = 5;
+    }
+    else if (opt == 6) {
+        type = 6;
+    }
+    else {
+        cout << "ERROR" << endl;
+        return;
+    }
+
+    cout << "Enter what to search: ";
+    cin.clear();
+    cin.ignore();
+    getline(cin, input);
+
+
+    University* result = interpolationSearch(univDLL.head, input, type);
+
+    if (result != nullptr) {
+        result->display();
+    }
+    else {
+        cout << "UNIVERSITY NOT FOUND" << endl;
+    }
 }
 
 void University :: Reg_Inter_Search()
