@@ -1,7 +1,7 @@
 #include <iostream>
+using namespace std;
 
 template <class Node>
-
 class DoubleLinkedList {
 public:
     Node* head;
@@ -75,7 +75,6 @@ public:
         while (current != nullptr) 
         {
             current->display();
-			cout << endl;
 			current = current->nextAdd;
         }
         std::cout << "List ends" << std::endl;
