@@ -803,7 +803,8 @@ public:
             std::cout << "1. View user details" << std::endl;
             std::cout << "2. View users feedback" << std::endl;
             std::cout << "3. View customers favourite universities" << std::endl;
-            std::cout << "4. Logout\n" << std::endl;
+            std::cout << "4. Generate Report" << std::endl;
+            std::cout << "5. Logout\n" << std::endl;
             std::cout << "==========================================\n" << std::endl;
             std::cout << "Please select an option (1-4): " << std::endl;
             std::cin >> choice;
@@ -890,6 +891,9 @@ public:
                     }
                     break;
                 case 4:
+                    //
+                    break;
+                case 5:
                     void UserMainMenu();
                     break;
                 default:
