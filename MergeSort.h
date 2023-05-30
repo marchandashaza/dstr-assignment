@@ -54,14 +54,25 @@ void merge(string* array, int const left, int const mid, int const right)
     delete[] rightArray;
 }
 
-void mergeSort(string* array, int const begin, int const end)
+void mergeSortascending(string* array, int const begin, int const end)
+{
+    if (begin <= end)
+        return;
+
+    auto mid = begin + (end - begin) / 2;
+    mergeSortascending(array, begin, mid);
+    mergeSortascending(array, mid + 1, end);
+    merge(array, begin, mid, end);
+}
+
+void mergeSortdescending(string* array, int const begin, int const end)
 {
     if (begin >= end)
         return;
 
     auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
+    mergeSortdescending(array, begin, mid);
+    mergeSortdescending(array, mid + 1, end);
     merge(array, begin, mid, end);
 }
 
@@ -100,7 +111,8 @@ void readCSVMergeSort(const string& filename)
 
     auto arr_size = i;
 
-    mergeSort(values, 0, arr_size - 1);
+    mergeSortascending(values, 0, arr_size - 1);
+
 
     cout << "\nSorted contents are:\n";
     printArray(values, arr_size);
