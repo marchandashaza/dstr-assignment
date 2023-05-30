@@ -2,13 +2,11 @@
 
 // Node class represents a single node in the linked list
 template <class Node>
-// LinkedList class represents the singly linked list
+// SingleLinkedList class represents the singly linked list
 class SingleLinkedList {
-private:
-    Node* head;
-    Node* tail;
 public:
-    // Constructor
+	Node* head;
+    Node* tail;
     SingleLinkedList() {
         head = nullptr;
     }

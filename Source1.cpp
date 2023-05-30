@@ -17,68 +17,70 @@ extern bool searchInCSV(const std::string& filename, const std::string& searchIt
 
 
 
-class Favorite{
+class Favorite
+{
     public:
-        string name;
+        string username;
         string institution;
         Favorite*nextAdd;
         Favorite*prevAdd;
         DoubleLinkedList<Favorite>favDLL;
 
         Favorite(string name, string institution) {
-            this -> name = name;
+            this -> username = name;
             this -> institution = institution;
             this -> nextAdd = NULL;
             this -> prevAdd = NULL;
         }
 
         Favorite(){
-            this -> name = "";
+            this -> username = "";
             this -> institution = "";
             this -> nextAdd = NULL;
             this -> prevAdd = NULL;
         }
 
 
-        void addToFavorite(string name, string institution){
-            Favorite* newNode = new Favorite(name, institution);
+        void addToFavorite(string username, string institution){
+            Favorite* newNode = new Favorite(username, institution);
             favDLL.InsertEnd(newNode);
         }
 
         void addToFile(){
             ofstream file("favorite.csv",std::ios::app);
             if (file.is_open()){
-                Favorite*current = favDLL.tail;
+                Favorite*current = favDLL.head;
                 while (current != NULL)
                 {
-                    cout << "Name: " << current->name << endl;
+                    cout << "Name: " << current->username << endl;
                     cout << "Favourited Institutions: " << current->institution <<endl;
 
-                    file << current -> name << ',';
+                    file << current -> username << ',';
                     file << current -> institution << endl;
 
                     current = current -> nextAdd;
                 }
-                cout << "End of favourited institutions" << endl; 
+                cout << "Update file" << endl; 
             }
+            file.close();
         }
-};
+        
+        void display() 
+        {
+            cout<< left << this -> username << ":";
+            cout<< this -> institution << endl;
+        }
 
-class generateid
-{
-private:
-    int counter;
+        void display_fav()
+        {
+            favDLL.Display();
+        }
 
-public:
-    generateid() : counter(1) {}
-
-    std::string generatefeedbackid()
-    {
-        std::string feedbackID = "FB" + std::to_string(counter);
-        feedbackID = feedbackID.insert(2, std::string(3 - std::to_string(counter).length(), '0'));
-        counter++;
-        return feedbackID;
-    }
+        void header()
+        {
+            cout<< left << this -> username << ":";
+            cout<< this -> institution << endl;
+        }
 };
 
 
@@ -122,33 +124,121 @@ class Feedback
         this->fbreply_date = "N/A";
     }
 
-    void displayAndAddFeedbackID (){
-    generateid generator;
-    std::string id = generator.generatefeedbackid();
-    
-    std::cout << "Generated ID: " << id << std::endl;
-
-    std::ofstream file("feedback.csv", std::ios::app);
-        if (file.is_open()) {
-            file << id << std::endl;
-            file.close();
-            std::cout << "ID added to the file." << std::endl;
-        } else {
-            std::cout << "Failed to open the file." << std::endl;
-        }
-    
-}
-    
-    void insertfb(string username, string institution, string feedback)
+    void setfbreply() 
     {
-        void displayAndAddFeedbackID();
-        
-
-       
+        this->fbreply = fbreply;
     }
-};
 
-   
+    string getfbreply()
+    {
+        return this->fbreply;
+    }
+
+    void setfbreply_date()
+    {
+        this->fbreply_date = fbreply_date;
+    }
+
+    string getfbreply_date()
+    {
+        return this->fbreply_date;
+    }
+
+    void generateFeedbackID(int& counter, std::string& feedbackID)
+    {
+    feedbackID = "FB" + std::to_string(counter);
+    feedbackID = feedbackID.insert(2, std::string(3 - std::to_string(counter).length(), '0'));
+    counter++;
+    }
+  
+    std::string fbtime()
+    {
+        std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        std::tm* currentTm = std::localtime(&currentTime);
+        
+        int day = currentTm->tm_mday;
+        int month = currentTm->tm_mon + 1; 
+        int year = currentTm->tm_year + 1900; 
+        int hour = currentTm->tm_hour;
+        int minute = currentTm->tm_min;
+        int second = currentTm->tm_sec;
+
+        std::stringstream buffer;
+        buffer << std::setfill('0');
+        buffer << std::setw(2) << day << '/' << std::setw(2) << month << '/' << year << ' ';
+        buffer << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
+        
+        return buffer.str();
+    }
+
+    void addfb(string& feedbackID, string username, string institution, string feedback)
+    {
+        int counter = 1;
+        generateFeedbackID(counter, feedbackID);
+        string FbId = feedbackID;
+        string fbdate = fbtime();
+        addToList(FbId, username, institution, feedback, fbdate, this->fbreply, this->fbreply_date);
+    }
+    void addToList(string FbId, string username, string institution, string feedback, string fbdate, string fbreply, string fbreply_date)
+    {
+        Feedback* newNode = new Feedback(FbId, username, institution, feedback, fbdate, fbreply, fbreply_date);
+        fbDLL.InsertEnd(newNode);
+    }
+    void addToFile(){
+            ofstream file("feedback.csv",std::ios::app);
+            if (file.is_open()){
+                Feedback*current = fbDLL.head;
+                while (current != NULL)
+                {
+                    cout << "Feedback ID: " << current->FbId << endl;
+                    cout << "Username: " << current->username <<endl;
+                    cout << "Institution: " << current->institution << endl;
+                    cout << "Feedback: " << current->feedback <<endl;
+                    cout << "Feedback Date: " << current->fbdate << endl;
+                    cout << "Reply: " << current->fbreply <<endl;
+                    cout << "Reply Date: " << current->fbreply_date << endl;
+
+                    file << current -> FbId << ',';
+                    file << current -> username << ',';
+                    file << current -> institution << ',';
+                    file << current -> feedback << ',';
+                    file << current -> fbdate << ',';
+                    file << current -> fbreply << ',';
+                    file << current -> fbreply_date << endl;
+
+                    current = current -> nextAdd;
+                }
+                cout << "Update file" << endl; 
+            }
+            file.close();
+        }
+    void display() 
+        {
+            cout<< left << this->FbId << ":";
+            cout<< this->username << ":";
+            cout<< this->institution << ":";
+            cout<< this->feedback << ":";
+            cout<< this->fbdate << ":";
+            cout<< this->fbreply << ":";
+            cout<< this->fbreply_date << endl;
+        }
+    void display_feedback()
+        {
+            fbDLL.Display();
+        }
+
+    void header()
+        {
+            cout<< left << this->FbId << ":";
+            cout<< this->username << ":";
+            cout<< this->institution << ":";
+            cout<< this->feedback << ":";
+            cout<< this->fbdate << ":";
+            cout<< this->fbreply << ":";
+            cout<< this->fbreply_date << endl;
+        }
+};
 
 
 class University 
@@ -438,10 +528,10 @@ void University :: Quick_Sort()
     //
 }
 
-bool University :: compareAttributes()
-{
-    //
-}
+// bool University :: compareAttributes()
+// {
+//     //
+// }
 
 void University :: display()
 {
@@ -470,7 +560,7 @@ void University :: display()
 
 void University :: display_univinfo()
 {
-    univDLL.display();
+    univDLL.Display();
 }
 
 

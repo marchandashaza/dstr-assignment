@@ -3,11 +3,9 @@
 template <class Node>
 
 class DoubleLinkedList {
-private:
+public:
     Node* head;
     Node* tail;
-    
-public:
     DoubleLinkedList() {
         head = nullptr;
     }
@@ -72,7 +70,7 @@ public:
         }
     }
 
-    void display() {
+    void Display() {
         Node* current = head;
         while (current != nullptr) 
         {
