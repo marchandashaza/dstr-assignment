@@ -1,0 +1,84 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
+// Sorting class with a sorting function
+class Sorting {
+public:
+    static void sortArray(int arr[], int size) {
+        // Your sorting implementation here
+        // ...
+    }
+};
+
+// Function to perform interpolation search
+int interpolationSearch(int arr[], int size, int key) {
+    int low = 0;
+    int high = size - 1;
+
+    while (low <= high && key >= arr[low] && key <= arr[high]) {
+        if (low == high) {
+            if (arr[low] == key)
+                return low;
+            return -1;
+        }
+
+        int pos = low + (((double)(high - low) / (arr[high] - arr[low])) * (key - arr[low]));
+
+        if (arr[pos] == key)
+            return pos;
+
+        if (arr[pos] < key)
+            low = pos + 1;
+        else
+            high = pos - 1;
+    }
+
+    return -1;
+}
+
+int main() {
+    string filename = "data.csv";  // CSV file path
+
+    ifstream file(filename);
+
+    if (!file) {
+        cerr << "Failed to open the file: " << filename << endl;
+        return 1;
+    }
+
+    string line;
+    int data[100];  // Assuming a maximum of 100 elements in the CSV file
+    int index = 0;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string value;
+
+        while (getline(ss, value, ',')) {
+            data[index++] = stoi(value);
+        }
+    }
+
+    file.close();
+
+    int size = index;
+
+    // Call the sorting function from the Sorting class to sort the array
+    Sorting::sortArray(data, size);
+
+    int key;
+    cout << "Enter the value to search: ";
+    cin >> key;
+
+    int result = interpolationSearch(data, size, key);
+
+    if (result == -1)
+        cout << "Element not found in the array." << endl;
+    else
+        cout << "Element found at index: " << result << endl;
+
+    return 0;
+}
