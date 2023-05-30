@@ -1,24 +1,56 @@
-void searchDLLMergeSort(DoubleLinkedList<string>& dll)
-{
-    // Ask for the value to search
-    string valueToSearch;
-    cout << "Enter the value to search: ";
-    getline(cin, valueToSearch);
+#pragma once
+#include "DoubleLinkedList.h"
+#include <fstream>
 
-    DoubleLinkedList<string>::Node* current = dll.begin();  // Use fully qualified type
-    bool found = false;
+template <class T>
+typename DoubleLinkedList<T>::Node* merge(typename DoubleLinkedList<T>::Node* left, typename DoubleLinkedList<T>::Node* right) {
+    // Merge two sorted lists (left and right) into a single sorted list
+    typename DoubleLinkedList<T>::Node* result = nullptr;
 
-    while (current != nullptr) {
-        if (current->data == valueToSearch) {
-            found = true;
-            break;
-        }
-        current = dll.next(current);
-    }
+    if (left == nullptr)
+        return right;
+    if (right == nullptr)
+        return left;
 
-    if (found) {
-        cout << "Value found in the DLL." << endl;
+    if (left->data <= right->data) {
+        result = left;
+        result->next = merge<T>(left->next, right);
+        result->next->prev = result;
     } else {
-        cout << "Value not found in the DLL." << endl;
+        result = right;
+        result->next = merge<T>(left, right->next);
+        result->next->prev = result;
     }
-};
+
+    return result;
+}
+
+template <class T>
+void mergeSort(DoubleLinkedList<T>& dll) {
+    // Perform merge sort on the DoubleLinkedList
+    typename DoubleLinkedList<T>::Node* head = dll.getHead();
+
+    if (head == nullptr || head->next == nullptr)
+        return;
+
+    typename DoubleLinkedList<T>::Node* mid = dll.getMiddle();
+    typename DoubleLinkedList<T>::Node* nextToMid = mid->next;
+
+    // Set the previous node of mid to nullptr
+    mid->next = nullptr;
+    nextToMid->prev = nullptr;
+
+    DoubleLinkedList<T> leftHalf;
+    DoubleLinkedList<T> rightHalf;
+
+    leftHalf.setHead(head);
+    leftHalf.setTail(mid);
+    rightHalf.setHead(nextToMid);
+    rightHalf.setTail(dll.getTail());
+
+    mergeSort<T>(leftHalf);
+    mergeSort<T>(rightHalf);
+
+    dll.setHead(merge<T>(leftHalf.getHead(), rightHalf.getHead()));
+    dll.setTail(merge<T>(leftHalf.getTail(), rightHalf.getTail()));
+}
