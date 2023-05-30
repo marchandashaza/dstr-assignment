@@ -39,29 +39,30 @@ class Favorite
         }
 
 
-        void addToFavorite(string username, string institution){
-            Favorite* newNode = new Favorite(username, institution);
-            favDLL.InsertEnd(newNode);
-        }
+    void addToFavorite(string username, string institution) {
+    Favorite* newNodeData = new Favorite(username, institution);
+    DoubleLinkedList<Favorite>::Node* newNode = new DoubleLinkedList<Favorite>::Node(newNodeData);
+    favDLL.InsertEnd(newNode);
+    }
 
-        void addToFile(){
-            ofstream file("favorite.csv",std::ios::app);
-            if (file.is_open()){
-                Favorite*current = favDLL.head;
-                while (current != NULL)
-                {
-                    cout << "Name: " << current->username << endl;
-                    cout << "Favourited Institutions: " << current->institution <<endl;
+        void addToFile() {
+            ofstream file("favorite.csv", std::ios::app);
+            if (file.is_open()) {
+                DoubleLinkedList<Favorite>::Node* current = favDLL.head;
+                while (current != nullptr) {
+                    cout << "Name: " << current->data.username << endl;
+                    cout << "Favourited Institutions: " << current->data.institution << endl;
 
-                    file << current -> username << ',';
-                    file << current -> institution << endl;
+                    file << current->data.username << ',';
+                    file << current->data.institution << endl;
 
-                    current = current -> nextAdd;
+                    current = current->nextAdd;
                 }
-                cout << "Update file" << endl; 
+                cout << "Update file" << endl;
             }
             file.close();
         }
+
         
         void display() 
         {
@@ -179,37 +180,37 @@ class Feedback
     }
     void addToList(string FbId, string username, string institution, string feedback, string fbdate, string fbreply, string fbreply_date)
     {
-        Feedback* newNode = new Feedback(FbId, username, institution, feedback, fbdate, fbreply, fbreply_date);
+        DoubleLinkedList<Feedback>::Node* newNode = new DoubleLinkedList<Feedback>::Node(Feedback(FbId, username, institution, feedback, fbdate, fbreply, fbreply_date));
         fbDLL.InsertEnd(newNode);
     }
-    void addToFile(){
-            ofstream file("feedback.csv",std::ios::app);
-            if (file.is_open()){
-                Feedback*current = fbDLL.head;
-                while (current != NULL)
-                {
-                    cout << "Feedback ID: " << current->FbId << endl;
-                    cout << "Username: " << current->username <<endl;
-                    cout << "Institution: " << current->institution << endl;
-                    cout << "Feedback: " << current->feedback <<endl;
-                    cout << "Feedback Date: " << current->fbdate << endl;
-                    cout << "Reply: " << current->fbreply <<endl;
-                    cout << "Reply Date: " << current->fbreply_date << endl;
+    void addToFile()
+    {
+        ofstream file("feedback.csv", std::ios::app);
+        if (file.is_open()) {
+            DoubleLinkedList<Feedback>::Node* current = fbDLL.head;
+            while (current != nullptr) {
+                cout << "Feedback ID: " << current->data.FbId << endl;
+                cout << "Username: " << current->data.username << endl;
+                cout << "Institution: " << current->data.institution << endl;
+                cout << "Feedback: " << current->data.feedback << endl;
+                cout << "Feedback Date: " << current->data.fbdate << endl;
+                cout << "Reply: " << current->data.fbreply << endl;
+                cout << "Reply Date: " << current->data.fbreply_date << endl;
 
-                    file << current -> FbId << ',';
-                    file << current -> username << ',';
-                    file << current -> institution << ',';
-                    file << current -> feedback << ',';
-                    file << current -> fbdate << ',';
-                    file << current -> fbreply << ',';
-                    file << current -> fbreply_date << endl;
+                file << current->data.FbId << ',';
+                file << current->data.username << ',';
+                file << current->data.institution << ',';
+                file << current->data.feedback << ',';
+                file << current->data.fbdate << ',';
+                file << current->data.fbreply << ',';
+                file << current->data.fbreply_date << endl;
 
-                    current = current -> nextAdd;
-                }
-                cout << "Update file" << endl; 
+                current = current->nextAdd;
             }
-            file.close();
+            cout << "Update file" << endl;
         }
+        file.close();
+    }
     void display() 
         {
             cout<< left << this->FbId << ":";
@@ -489,9 +490,13 @@ void University :: InsertToEndList(string rank, string institution, string Locat
     }
     
     University* newNode = new University(new_rank, institution, LocationCode, Location, new_ArScore, new_ArRank, new_ErScore,
-		new_ErRank, new_FsrScore, new_FsrRank, new_CpfScore, new_CpfRank, new_IfrScore, new_IfrRank, new_IsrScore,
-		new_IsrRank, new_IrnScore, new_IrnRank, new_GerScore, new_GerRank, new_ScoreScaled);
-        univDLL.InsertEnd(newNode);
+    new_ErRank, new_FsrScore, new_FsrRank, new_CpfScore, new_CpfRank, new_IfrScore, new_IfrRank, new_IsrScore,
+    new_IsrRank, new_IrnScore, new_IrnRank, new_GerScore, new_GerRank, new_ScoreScaled);
+
+    DoubleLinkedList<University>::Node* newListNode = new DoubleLinkedList<University>::Node(newNode);
+    univDLL.InsertEnd(newListNode);
+
+
 }
 
 void University :: Binary_Search()
@@ -559,6 +564,75 @@ void University :: display_univinfo()
     univDLL.Display();
 }
 
+void mergeSortFromDLLUserData(){
+    const string filename = "userdata.csv";
+        performDLLMergeSort(filename);
+}
+
+void mergeSortFromDLLUserFeedback(){
+    const string filename = "feedback.csv";
+        performDLLMergeSort(filename);
+}
+void mergeSortFromDLLUserFav(){
+    const string filename = "favorite.csv";
+        performDLLMergeSort(filename);
+}
+
+void populateDLLFromFile(DoubleLinkedList<int>& dll, const std::string& filename) {
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        std::string line;
+        while (std::getline(file, line)) {
+            std::stringstream ss(line);
+            std::string valueStr;
+            while (std::getline(ss, valueStr, ',')) {
+                int value = std::stoi(valueStr);
+                dll.InsertEnd(new typename DoubleLinkedList<int>::Node(value));
+            }
+        }
+        file.close();
+    }
+}
+
+
+void quickSortFromDLLUserData() {
+    DoubleLinkedList<int> dll; // Replace 'int' with the appropriate type for your DLL
+
+    std::string filename = "userdata.csv"; // Replace with the actual filename and path of your CSV file
+
+    populateDLLFromFile(dll, filename); // Populate the DLL from the CSV file
+
+    quickSort(dll);
+
+    cout << "\nSorted list is:" << endl;
+    dll.Display();
+}
+
+void quickSortFromDLLUserFeedback() {
+    DoubleLinkedList<int> dll; // Replace 'int' with the appropriate type for your DLL
+
+    std::string filename = "feedback.csv"; // Replace with the actual filename and path of your CSV file
+
+    populateDLLFromFile(dll, filename); // Populate the DLL from the CSV file
+
+    quickSort(dll);
+
+    cout << "\nSorted list is:" << endl;
+    dll.Display();
+}
+
+void quickSortFromDLLUserFav() {
+    DoubleLinkedList<int> dll; // Replace 'int' with the appropriate type for your DLL
+
+    std::string filename = "favorite.csv"; // Replace with the actual filename and path of your CSV file
+
+    populateDLLFromFile(dll, filename); // Populate the DLL from the CSV file
+
+    quickSort(dll);
+
+    cout << "\nSorted list is:" << endl;
+    dll.Display();
+}
 class Admin {
 public:
     void adminmenu() {
@@ -590,16 +664,18 @@ public:
 
                     switch (sortchoice) {
                         case 1:
-                            displayMergeSortedUserData();
-
+                            mergeSortFromDLLUserData();
+                            break;
                             
 
                         case 2:
-                            displayQuickSortedUserData();
+                            quickSortFromDLLUserData();
+                            break;
 
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
 
                     int userchoice;
@@ -612,13 +688,15 @@ public:
                     switch (sortchoice){
                         case 1:
                             void updatePassword();
+                            break;
                         
                         case 2:
                             adminmenu();
-
+                            break;;
                         case 3:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
 
                     
@@ -632,14 +710,17 @@ public:
 
                     switch(sortchoice2){
                         case 1:
-                            displayMergeSortedUserFeedback();
-                        
+                            
+                            mergeSortFromDLLUserFeedback();
+                            break;
                         case 2: 
-                            displayQuickSortedUserFeedback();
+                            quickSortFromDLLUserFeedback();
+                            break;
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
-                    }
+                            break;
+                    }       
                     break;
                 case 3: //view customers favorite unis
                     int sortchoice3;
@@ -651,13 +732,15 @@ public:
 
                     switch(sortchoice3){
                         case 1:
-                            displayMergeSortedUserFav();
-                        
+                            mergeSortFromDLLUserFav();
+                            break;
                         case 2: 
-                            displayQuickSortedUserFav();
+                            quickSortFromDLLUserFav();
+                            break;
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
                     break;
                 case 4:
@@ -672,108 +755,111 @@ public:
             }
         } while (choice != 1 && choice != 2 && choice != 3 && choice != 4);
     }
-   struct UserNode {
+   
+};
+
+struct UserNode {
     string name;
     string password;
 };
 
-// void updatePassword(const string& filename) {
-//     DoubleLinkedList<UserNode> userNodeDLL;
-//     ifstream file(filename);
-    
-//     if (!file) {
-//         cout << "Failed to open file: " << filename << endl;
-//         return;
-//     }
-    
-//     UserNode userNode;
-//     string line;
-    
-//     // Read and parse the file
-//     while (getline(file, line)) {
-//         size_t pos = line.find(", ");
-//         if (pos != string::npos) {
-//             userNode.name = line.substr(0, pos);
-//             userNode.password = line.substr(pos + 2);
-//             userNodeDLL.push_back(userNode);
-//         }
-//     }
-    
-//     file.close();
-    
-//     // Ask for the name of the user to update
-//     string nameToUpdate;
-//     cout << "Enter the name of the user to update: ";
-//     getline(cin, nameToUpdate);
-    
-//     // Find the user to update
-//     bool found = false;
-//     for (User& u : users) {
-//         if (u.name == nameToUpdate) {
-//             found = true;
-//             cout << "Enter the new password for " << u.name << ": ";
-//             getline(cin, u.password);
-//             break;
-//         }
-//     }
-    
-//     if (!found) {
-//         cout << "User not found." << endl;
-//         return;
-//     }
-    
-//     // Write the updated users to the file
-//     ofstream outFile(filename);
-//     if (!outFile) {
-//         cout << "Failed to open file: " << filename << endl;
-//         return;
-//     }
-    
-//     for (const User& u : users) {
-//         outFile << u.name << ", " << u.password << endl;
-//     }
-    
-//     outFile.close();
-    
-//     cout << "File updated successfully." << endl;
-// }
+void updatePassword(const string& filename) {
+    DoubleLinkedList<UserNode> userNodeDLL;
+    ifstream file(filename);
 
-// void changeUserPassword(){
-//     const string filename = "userdata.txt";
-//     updatePassword(filename);
-// }
+    if (!file) {
+        cout << "Failed to open file: " << filename << endl;
+        return;
+    }
 
-void displayMergeSortedUserData(){
-    const string filename = "userdata.csv";
-    readCSVMergeSort(filename);
+    UserNode userNode;
+    string line;
+
+    // Read and parse the file
+    while (getline(file, line)) {
+        size_t pos = line.find(", ");
+        if (pos != string::npos) {
+            userNode.name = line.substr(0, pos);
+            userNode.password = line.substr(pos + 2);
+            DoubleLinkedList<UserNode>::Node* newNode = new DoubleLinkedList<UserNode>::Node(userNode); // Create a new Node object with UserNode data
+            userNodeDLL.pushBack(newNode);
+        }
+    }
+
+    file.close();
+
+    // Ask for the name of the user to update
+    string nameToUpdate;
+    cout << "Enter the name of the user to update: ";
+    getline(cin, nameToUpdate);
+
+    // Find the user to update
+    bool found = false;
+    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
+        if (u->data.name == nameToUpdate) {
+            found = true;
+            cout << "Enter the new password for " << u->data.name << ": ";
+            getline(cin, u->data.password);
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "User not found." << endl;
+        return;
+    }
+
+    // Write the updated users to the file
+    ofstream outFile(filename);
+    if (!outFile) {
+        cout << "Failed to open file: " << filename << endl;
+        return;
+    }
+
+    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
+        outFile << u->data.name << ", " << u->data.password << endl;
+    }
+
+    outFile.close();
+
+    // Clean up memory
+    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
+        delete u;
+    }
+
+    cout << "File updated successfully." << endl;
 }
 
-void displayQuickSortedUserData(){
-    string filename = "userdata.csv";
-    // readCSVQuickSort(filename);
+void changeUserPassword() {
+    const string filename = "userdata.txt";
+    updatePassword(filename);
 }
 
-void displayMergeSortedUserFeedback(){
-    const string filename = "feedback.csv";
-    readCSVMergeSort(filename);
+
+
+void performDLLMergeSort(const string& filename) {
+    DoubleLinkedList<string> dll;  // Create a DoubleLinkedList object
+
+    // Read the contents of the file and insert into the DoubleLinkedList
+    ifstream file(filename);
+    if (!file) {
+        cout << "Failed to open file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        DoubleLinkedList<string>::Node* newNode = new DoubleLinkedList<string>::Node(line);
+        dll.InsertEnd(newNode);
+    }
+
+    file.close();
+
+    // Call the merge sort function
+    searchDLLMergeSort(dll);
 }
 
-void displayQuickSortedUserFeedback(){
-    const string filename = "feedback.csv";
-    // readCSVQuickSort(filename);
-}
 
-void displayMergeSortedUserFav(){
-    const string filename = "favorite.csv";
-    // readCSVMergeSort(filename);
-}
-
-void displayQuickSortedUserFav(){
-    const string filename = "favorite.csv";
-    // readCSVQuickSort(filename);
-}
-
-};
 class RegisteredUser {
 public:
     void displayMenu() {

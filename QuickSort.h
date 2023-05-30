@@ -1,135 +1,110 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-using namespace std;
+template <typename T>
+void quickSort(DoubleLinkedList<T>& dll);
 
-// template <class node>
+template <typename T>
+typename DoubleLinkedList<T>::Node* partition(DoubleLinkedList<T>& dll);
 
-struct Node {
-    string data;
-    struct Node* next;
-};
+template <typename T>
+typename DoubleLinkedList<T>::Node* quickSortRecur(typename DoubleLinkedList<T>::Node* head, typename DoubleLinkedList<T>::Node* end);
 
-void push(struct Node** head_ref, string new_data)
+template <typename T>
+void readDLLQuickSort(DoubleLinkedList<T>& dll);
+
+template <typename T>
+void quickSort(DoubleLinkedList<T>& dll)
 {
-    struct Node* new_node = new Node;
-    new_node->data = new_data;
-    new_node->next = (*head_ref);
-    (*head_ref) = new_node;
+    partition(dll);
 }
 
-void printList(struct Node* node)
+template <typename T>
+typename DoubleLinkedList<T>::Node* partition(DoubleLinkedList<T>& dll)
 {
-    cout << "Sorted list:" << endl;
-    while (node != NULL) {
-        cout << node->data << endl;
-        node = node->next;
-    }
-}
-
-struct Node* getTail(struct Node* cur)
-{
-    while (cur != NULL && cur->next != NULL)
-        cur = cur->next;
-    return cur;
-}
-
-struct Node* partition(struct Node* head, struct Node* end,
-                       struct Node** newHead,
-                       struct Node** newEnd)
-{
-    struct Node* pivot = end;
-    struct Node *prev = NULL, *cur = head, *tail = pivot;
+    typename DoubleLinkedList<T>::Node* newHead = nullptr;
+    typename DoubleLinkedList<T>::Node* newEnd = nullptr;
+    typename DoubleLinkedList<T>::Node* pivot = dll.tail;
+    typename DoubleLinkedList<T>::Node* prev = nullptr;
+    typename DoubleLinkedList<T>::Node* cur = dll.head;
+    typename DoubleLinkedList<T>::Node* tail = pivot;
+    typename DoubleLinkedList<T>::Node* head = dll.head;
+    tail = dll.tail; // Remove duplicate declaration
 
     while (cur != pivot) {
         if (cur->data < pivot->data) {
-            if ((*newHead) == NULL)
-                (*newHead) = cur;
-
+            if (newHead == nullptr) {
+                newHead = cur;
+            }
             prev = cur;
-            cur = cur->next;
+            cur = cur->nextAdd;
         }
         else {
-            if (prev)
-                prev->next = cur->next;
-            struct Node* tmp = cur->next;
-            cur->next = NULL;
-            tail->next = cur;
+            if (prev) {
+                prev->nextAdd = cur->nextAdd;
+            }
+            typename DoubleLinkedList<T>::Node* tmp = cur->nextAdd;
+            cur->nextAdd = nullptr;
+            tail->nextAdd = cur;
             tail = cur;
             cur = tmp;
         }
     }
 
-    if ((*newHead) == NULL)
-        (*newHead) = pivot;
+    if (newHead == nullptr) {
+        newHead = pivot;
+    }
 
-    (*newEnd) = tail;
+    newEnd = tail;
+    head = quickSortRecur(head, tail);
+    pivot->nextAdd = quickSortRecur(pivot->nextAdd, newEnd);
+
+    dll.head = head;
+    dll.tail = tail;
 
     return pivot;
 }
 
-struct Node* quickSortRecur(struct Node* head, struct Node* end)
+template <typename T>
+typename DoubleLinkedList<T>::Node* quickSortRecur(typename DoubleLinkedList<T>::Node* head, typename DoubleLinkedList<T>::Node* end)
 {
     if (!head || head == end)
         return head;
 
-    Node* newHead = NULL, * newEnd = NULL;
-    struct Node* pivot = partition(head, end, &newHead, &newEnd);
+    typename DoubleLinkedList<T>::Node* newHead = nullptr;
+    typename DoubleLinkedList<T>::Node* newEnd = nullptr;
+    typename DoubleLinkedList<T>::Node* pivot = partition(head, end, newHead, newEnd);
 
     if (newHead != pivot) {
-        struct Node* tmp = newHead;
-        while (tmp->next != pivot)
-            tmp = tmp->next;
-        tmp->next = NULL;
+        typename DoubleLinkedList<T>::Node* tmp = newHead;
+        while (tmp->nextAdd != pivot)
+            tmp = tmp->nextAdd;
+        tmp->nextAdd = nullptr;
 
         newHead = quickSortRecur(newHead, tmp);
 
-        tmp = getTail(newHead);
-        tmp->next = pivot;
+        tmp = dll.getTail(newHead); // Assuming dll is an instance of DoubleLinkedList<T> in readDLLQuickSort function
+        tmp->nextAdd = pivot;
     }
 
-    pivot->next = quickSortRecur(pivot->next, newEnd);
+    pivot->nextAdd = quickSortRecur(pivot->nextAdd, newEnd);
 
     return newHead;
 }
 
-void quickSort(struct Node** headRef)
+template <typename T>
+void readDLLQuickSort(DoubleLinkedList<T>& dll)
 {
-    (*headRef) = quickSortRecur(*headRef, getTail(*headRef));
-    return;
+    quickSort(dll);
+
+    cout << "\nSorted list is:" << endl;
+    dll.Display();
 }
 
-void readCSVQuickSort(const string& filename)
+void quickSortFromDLLUserData()
 {
-    ifstream file(filename);
-    if (!file) {
-        cout << "Failed to open file: " << filename << endl;
-        return;
-    }
+    DoubleLinkedList<string> dll; // Replace 'string' with the appropriate type for your DLL
+    quickSort(dll);
 
-    const int MAX_SIZE = 100;
-    string values[MAX_SIZE];
-    string line;
-    int i = 0;
-
-    while (getline(file, line) && i < MAX_SIZE) {
-        stringstream ss(line);
-        string value;
-
-        getline(ss, value, ',');
-        values[i] = value;
-
-        i++;
-    }
-
-    file.close();
-
-    struct Node* head = NULL;
-
-    for (int j = i - 1; j >= 0; j--)
-        push(&head, values[j]);
-
-    cout << "\nSorted array is:" << endl;
-    printList(head);
+    cout << "\nSorted list is:" << endl;
+    dll.Display();
+    readDLLQuickSort(dll);
 }
+
