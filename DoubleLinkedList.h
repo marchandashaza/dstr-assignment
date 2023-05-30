@@ -1,13 +1,15 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+using namespace std;
 
 template <class Node>
 
-class DoubleLinkedList {
-private:
+class DoubleLinkedList {  
+public:
     Node* head;
     Node* tail;
-    
-public:
     DoubleLinkedList() {
         head = nullptr;
     }
@@ -77,10 +79,10 @@ public:
         while (current != nullptr) 
         {
             current->display();
-			cout << endl;
-			current = current->nextAdd;
+			// cout << endl;		
+            current = current->nextAdd;
         }
-        std::cout << "List ends" << std::endl;
+        cout << "List ends" << endl;
     }
 
 private:

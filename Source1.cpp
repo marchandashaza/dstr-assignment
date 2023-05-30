@@ -454,8 +454,7 @@ private:
 	string password;
 
 public:
-	
-	void static UserMainMenu() {
+	void UserMainMenu() {
 		int Menu;
 		cout << "\n Hello New User, Welcome to the University Ranking System!" << endl;
 		cout << "\n\n\n\n Please Select the Menu from the Main Menu ;) " << endl;
@@ -577,36 +576,33 @@ class RegisteredUser {
 public:
     void displayMenu() {
         int choice;
+        User user;
         do {
             std::cout << "=== Main Menu ===" << std::endl;
-            std::cout << "1. Login" << std::endl;
-            std::cout << "2. Display University Academic Ranking" << std::endl;
-            std::cout << "3. Display University Faculty and Student Ratio Score" << std::endl;
-            std::cout << "4. Display University Employee Reputation Score" << std::endl;
-            std::cout << "5. Search University" << std::endl;
-            std::cout << "6. Logout" << std::endl;
-            std::cout << "7. Exit" << std::endl;
+            std::cout << "1. Display University Academic Ranking" << std::endl;
+            std::cout << "2. Display University Faculty and Student Ratio Score" << std::endl;
+            std::cout << "3. Display University Employee Reputation Score" << std::endl;
+            std::cout << "4. Search University" << std::endl;
+            std::cout << "5. Logout" << std::endl;
+            std::cout << "6. Exit" << std::endl;
             std::cout << "Enter your choice: ";
             std::cin >> choice;
 
             switch (choice) {
             case 1:
-                option1();
+                SortUniversities();
                 break;
             case 2:
-                option2();
+                SortUniversities();
                 break;
             case 3:
-                option3();
+                SortUniversities();
                 break;
             case 4:
-                option4();
+                SearchUniversities();
                 break;
             case 5:
-                option5();
-                break;
-            case 6:
-                option6();
+                // user.UserMainMenu();
                 break;
             case 7:
                 std::cout << "Exiting..." << std::endl;
@@ -614,149 +610,199 @@ public:
             default:
                 std::cout << "Invalid choice. Please try again." << std::endl;
             }
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
 private:
     // Function to check login credentials
-    void login() {
-        std::string username, password;
+    // void login() {
+    //     std::string username, password;
 
-        std::cout << "=== Login ===" << std::endl;
-        std::cout << "Username: ";
-        std::cin >> username;
-        std::cout << "Password: ";
-        std::cin >> password;
+    //     std::cout << "=== Login ===" << std::endl;
+    //     std::cout << "Username: ";
+    //     std::cin >> username;
+    //     std::cout << "Password: ";
+    //     std::cin >> password;
 
-        if (validateCredentials(username, password)) {
-            std::cout << "Login successful!" << std::endl;
-            // Perform additional actions after successful login
+    //     if (validateCredentials(username, password)) {
+    //         std::cout << "Login successful!" << std::endl;
+    //         // Perform additional actions after successful login
+    //     }
+    //     else {
+    //         std::cout << "Invalid username or password." << std::endl;
+    //     }
+    // }
+
+    // bool validateCredentials(const std::string& username, const std::string& password) {
+    //     std::ifstream file("credentials.csv");
+    //     if (!file) {
+    //         std::cout << "Error opening file." << std::endl;
+    //         return false;
+    //     }
+
+    //     std::string line;
+    //     while (std::getline(file, line)) {
+    //         std::vector<std::string> tokens = split(line, ',');
+    //         if (tokens.size() >= 2 && tokens[0] == username && tokens[1] == password) {
+    //             file.close();
+    //             return true;
+    //         }
+    //     }
+
+    //     file.close();
+    //     return false;
+    // }
+
+    void static SortUniversities() {
+
+        int sort;
+        std::cout << "\n Hello, welcome to the sort menu!" << std::endl;
+        std::cout << "\n Please choose which sort algorithm you wanted to use!" << std::endl;
+        std::cout << "\n 1. Merge Sort Algorithm" << std::endl;
+        std::cout << "\n 2. Quick Sort Algorithm" << std::endl;
+        std::cin >> sort;
+
+        if (sort == 1) {
+            void MergeSort();
         }
+
+        else if (sort == 2) {
+            void QuickSort();
+        }
+
         else {
-            std::cout << "Invalid username or password." << std::endl;
-        }
-    }
+            std::cout << "\n The number you inserted is invalid!" << std::endl;
+            std::cout << "\n please re - enter your choice!" << std::endl;
 
-    bool validateCredentials(const std::string& username, const std::string& password) {
-        std::ifstream file("credentials.csv");
-        if (!file) {
-            std::cout << "Error opening file." << std::endl;
-            return false;
+            void SortUniversities();
         }
 
-        std::string line;
-        while (std::getline(file, line)) {
-            std::vector<std::string> tokens = split(line, ',');
-            if (tokens.size() >= 2 && tokens[0] == username && tokens[1] == password) {
-                file.close();
-                return true;
-            }
+
+    }
+
+    void static MergeSort() {
+
+
+
+    }
+
+    void static QuickSort() {
+
+
+
+    }
+
+    void static SearchUniversities() {
+
+        int search;
+        std::cout << "\n Hello, welcome to the search menu!" << std::endl;
+        std::cout << "\n Please choose which search algorithm you wanted to use!" << std::endl;
+        std::cout << "\n 1. Binary Search Algorithm" << std::endl;
+        std::cout << "\n 2. Interpolation Search Algorithm" << std::endl;
+        std::cin >> search;
+
+        if (search == 1) {
+            void BinarySearch();
         }
 
-        file.close();
-        return false;
+        else if (search == 2) {
+            void InterpolationSearch();
+        }
+
+        else {
+            std::cout << "\n The number you inserted is invalid!" << std::endl;
+            std::cout << "\n please re - enter your choice!" << std::endl;
+            void SearchUniversities();
+        }
+
     }
 
-    void option1() {
-        
-    }
-    void option2() {
-        std::cout << "Option 2 selected." << std::endl;
-        // Add your logic for Option 2 here
+    void static BinarySearch() {
+        int Choice;
+        std::cout << "\n " << std::endl;
+
+
     }
 
-    void option3() {
-        std::cout << "Option 3 selected." << std::endl;
-        // Add your logic for Option 3 here
+    void static InterpolationSearch() {
+        int choice;
+        std::cout << "\n" << std::endl;
+
     }
 
-    void option4() {
-        std::cout << "Option 4 selected." << std::endl;
-        // Add your logic for Option 3 here
-    }
-
-    void option5() {
-        std::cout << "Option 5 selected." << std::endl;
-        // Add your logic for Option 3 here
-    }
-
-    void option6() {
-        std::cout << "Option 6 selected." << std::endl;
-        // Add your logic for Option 3 here
-    }
 };
 
 
-struct User {
+struct UserNode {
     string name;
     string password;
 };
 
-void updatePassword(const string& filename) {
-    vector<User> users;
-    ifstream file(filename);
+// void updatePassword(const string& filename) {
+//     DoubleLinkedList<UserNode> userNodeDLL;
+//     ifstream file(filename);
     
-    if (!file) {
-        cout << "Failed to open file: " << filename << endl;
-        return;
-    }
+//     if (!file) {
+//         cout << "Failed to open file: " << filename << endl;
+//         return;
+//     }
     
-    User user;
-    string line;
+//     UserNode userNode;
+//     string line;
     
-    // Read and parse the file
-    while (getline(file, line)) {
-        size_t pos = line.find(", ");
-        if (pos != string::npos) {
-            user.name = line.substr(0, pos);
-            user.password = line.substr(pos + 2);
-            users.push_back(user);
-        }
-    }
+//     // Read and parse the file
+//     while (getline(file, line)) {
+//         size_t pos = line.find(", ");
+//         if (pos != string::npos) {
+//             userNode.name = line.substr(0, pos);
+//             userNode.password = line.substr(pos + 2);
+//             userNodeDLL.push_back(userNode);
+//         }
+//     }
     
-    file.close();
+//     file.close();
     
-    // Ask for the name of the user to update
-    string nameToUpdate;
-    cout << "Enter the name of the user to update: ";
-    getline(cin, nameToUpdate);
+//     // Ask for the name of the user to update
+//     string nameToUpdate;
+//     cout << "Enter the name of the user to update: ";
+//     getline(cin, nameToUpdate);
     
-    // Find the user to update
-    bool found = false;
-    for (User& u : users) {
-        if (u.name == nameToUpdate) {
-            found = true;
-            cout << "Enter the new password for " << u.name << ": ";
-            getline(cin, u.password);
-            break;
-        }
-    }
+//     // Find the user to update
+//     bool found = false;
+//     for (User& u : users) {
+//         if (u.name == nameToUpdate) {
+//             found = true;
+//             cout << "Enter the new password for " << u.name << ": ";
+//             getline(cin, u.password);
+//             break;
+//         }
+//     }
     
-    if (!found) {
-        cout << "User not found." << endl;
-        return;
-    }
+//     if (!found) {
+//         cout << "User not found." << endl;
+//         return;
+//     }
     
-    // Write the updated users to the file
-    ofstream outFile(filename);
-    if (!outFile) {
-        cout << "Failed to open file: " << filename << endl;
-        return;
-    }
+//     // Write the updated users to the file
+//     ofstream outFile(filename);
+//     if (!outFile) {
+//         cout << "Failed to open file: " << filename << endl;
+//         return;
+//     }
     
-    for (const User& u : users) {
-        outFile << u.name << ", " << u.password << endl;
-    }
+//     for (const User& u : users) {
+//         outFile << u.name << ", " << u.password << endl;
+//     }
     
-    outFile.close();
+//     outFile.close();
     
-    cout << "File updated successfully." << endl;
-}
+//     cout << "File updated successfully." << endl;
+// }
 
-void changeUserPassword(){
-    const string filename = "userdata.txt";
-    updatePassword(filename);
-}
+// void changeUserPassword(){
+//     const string filename = "userdata.txt";
+//     updatePassword(filename);
+// }
 
 
 void displayMergeSortedUserData(){
@@ -907,7 +953,7 @@ public:
 int main()
 {
     string rank, institution, locationCode, location, arScore, arRank, erScore, erRank, fsrScore, fsrRank, cpfScore, 
-            cpfRank, ifrScore, ifrRank, isrScore, isrRank, gerScore, gerRank, scoreScaled;
+            cpfRank, ifrScore, ifrRank, isrScore, isrRank, irnScore, irnRank, gerScore, gerRank, scoreScaled;
     string username, password;
     //
     University * uni = new University();
@@ -938,26 +984,31 @@ int main()
             getline(file, ifrRank, ',');
             getline(file, isrScore, ',');
             getline(file, isrRank, ',');
+            getline(file, irnScore,',');
+            getline(file, irnRank, ',');
             getline(file, gerScore, ',');
             getline(file, gerRank, ',');
             getline(file, scoreScaled);
-            if (rank == "Rank")
-            {
-                continue;
-            }
-            else if (rank == "")
-            {
-                break;
-            }
-            InsertToTheFrontOfList(stoi(rank), institution, locationCode, location, stod(arScore), stoi(arRank), stod(erScore), stoi(erRank), stod(fsrScore), 
-            stoi(fsrRank), stod(cpfScore), stoi(cpfRank), stod(ifrScore), stoi(ifrRank), stod(isrScore), stoi(isrRank), stod(gerScore), stoi(gerRank), stod(scoreScaled));
+            // if (rank == "Rank")
+            // {
+            //     continue;
+            // }
+            // else if (rank == "")
+            // {
+            //     break;
+            // }
+            uni-> InsertToEndList(rank, institution, locationCode, location, arScore, arRank, erScore, erRank, fsrScore, 
+            fsrRank, cpfScore, cpfRank, ifrScore, ifrRank, isrScore, isrRank, irnScore, irnRank, gerScore, gerRank, scoreScaled);
+
         }
     }
 
+    User userClass;
+    userClass.UserMainMenu();
 
-    cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
-    void display_univinfo();
-    cout << endl;
-    return 0;
+    // cout << "2023 QS WORLD UNIVERSITY RANKINGS ARE AS SHOWN BELOW: \n\n" << endl << string(50, '=') << endl;
+    // void display_univinfo();
+    // cout << endl;
+    // return 0;
 
 }

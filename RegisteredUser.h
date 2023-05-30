@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+using namespace std;
+
 
 class MainMenu {
 public:
@@ -120,10 +122,4 @@ private:
 
     }
 
-
-    int main() {
-        MainMenu menu;
-        menu.displayMenu();
-
-        return 0;
-    }
+};

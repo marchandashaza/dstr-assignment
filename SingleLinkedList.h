@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 // Node class represents a single node in the linked list
 template <class Node>
@@ -50,13 +53,13 @@ public:
     // Display the elements in the list
     void display() {
         Node* current = head;
-        while (current != nullptr) 
+        while (current != nullptr)
         {
             current->display();
-			cout << endl;
+			// cout << "" << endl;
 			current = current->nextAdd;
         }
-        std::cout << "List ends" << std::endl;
+        cout << "List ends" << endl;
     }
 
 private:

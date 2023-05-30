@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 using namespace std;
 
 // Node structure for linked list
@@ -59,27 +62,27 @@ void printList(Node* node) {
     cout << endl;
 }
 
-int main() {
-    Node* head = NULL;
+// int main() {
+//     Node* head = NULL;
 
-    // Insert elements into the linked list
-    insertNode(&head, 2);
-    insertNode(&head, 5);
-    insertNode(&head, 8);
-    insertNode(&head, 12);
-    insertNode(&head, 16);
-    insertNode(&head, 18);
+//     // Insert elements into the linked list
+//     insertNode(&head, 2);
+//     insertNode(&head, 5);
+//     insertNode(&head, 8);
+//     insertNode(&head, 12);
+//     insertNode(&head, 16);
+//     insertNode(&head, 18);
 
-    cout << "Linked List: ";
-    printList(head);
+//     cout << "Linked List: ";
+//     printList(head);
 
-    int target = 12;
-    Node* result = interpolationSearch(head, target);
+//     int target = 12;
+//     Node* result = interpolationSearch(head, target);
 
-    if (result != NULL)
-        cout << "Element " << target << " found in the linked list." << endl;
-    else
-        cout << "Element " << target << " not found in the linked list." << endl;
+//     if (result != NULL)
+//         cout << "Element " << target << " found in the linked list." << endl;
+//     else
+//         cout << "Element " << target << " not found in the linked list." << endl;
 
-    return 0;
-}
+//     return 0;
+// }
