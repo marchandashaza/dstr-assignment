@@ -494,10 +494,17 @@ void University :: InsertToEndList(string rank, string institution, string Locat
         univDLL.InsertEnd(newNode);
 }
 
-void University :: Binary_Search()
-{
-    //
-}
+// void University :: Binary_Search()
+// {
+//     string target;
+		
+// 		cout << "Welcome to the Binary Search Menu!";
+// 		cout << "Please enter the university name: ";
+// 		cin.clear();
+// 		cin.ignore(numeric_limits<streamsize>::max(),'\n');
+// 		getline(cin, target);
+// 		NormalBinarySearch(univDLL.head, target)
+// };
 
 void University :: Reg_Binary_Search()
 {
