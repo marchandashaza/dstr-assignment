@@ -13,6 +13,8 @@
 #include "QuickSort.h"
 #pragma once
 using namespace std;
+extern bool searchInCSV(const std::string& filename, const std::string& searchItem);
+
 
 
 class Favorite{
@@ -789,11 +791,91 @@ void displayQuickSortedUserFav(){
     readCSVQuickSort(filename);
 }
 
+void displayInterpolationSearchUserData(){
+    string filename = "userdata.csv";
+    string searchItem;
+
+    cout << "Enter the item you want to search: ";
+    cin >> searchItem;
+
+    if (!searchInCSV(filename, searchItem)) {
+        cout << "Item not found in the CSV file." << endl;
+    }
+
+}
+
+void displayInterpolationSearchUserFav()
+{
+    string filename = "favorite.csv";
+    string searchItem;
+
+    cout << "Enter the item you want to search: ";
+    cin >> searchItem;
+
+    if (!interpolationSearch(filename, searchItem)) {
+        cout << "Item not found in the CSV file." << endl;
+    }
+}
+
+
+void deleteUserFromFile(const string& filename, const string& usernameToDelete)
+{
+    ifstream inputFile(filename);
+    ofstream tempFile("temp.txt");
+
+    if (!inputFile || !tempFile) {
+        cout << "Failed to open file." << endl;
+        return;
+    }
+
+    string line;
+    bool userDeleted = false;
+
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string username, password;
+
+        getline(ss, username, ',');
+        getline(ss, password, ',');
+
+        if (username != usernameToDelete) {
+            tempFile << line << endl;
+        } else {
+            userDeleted = true;
+        }
+    }
+
+    inputFile.close();
+    tempFile.close();
+
+    if (userDeleted) {
+        remove(filename.c_str());
+        rename("temp.txt", filename.c_str());
+        cout << "User deleted successfully." << endl;
+    } else {
+        remove("temp.txt");
+        cout << "User not found in the file." << endl;
+    }
+
+    
+}
+
+void deleteUser(){
+    string filename = "userdata.txt";
+    string usernameToDelete;
+
+    cout << "Enter the username you want to delete: ";
+    cin >> usernameToDelete;
+
+    deleteUserFromFile(filename, usernameToDelete);
+    Admin();
+}
+
 class Admin {
 public:
     void adminmenu() {
         int choice;
-        int userCount = 0;
+        int userCount = 0;  
         int userFavCount = 0;
 
         do {
@@ -813,43 +895,53 @@ public:
                     int sortchoice;
 
                     std::cout << "1. Merge Sort\n" << std::endl;
-                    std::cout << "2. Quick Sort\n\n" << std::endl;
-                    std::cout << "How would you like to sort the user details?: " << std::endl;
+                    std::cout << "2. Quick Sort\n" << std::endl;
+                    std::cout << "3. Edit User Details\n" << std::endl;
+                    std::cout << "4. Back\n\n" << std::endl;
+                    std::cout << "What would you like to do?: " << std::endl;
                     std::cin >> sortchoice;
 
                     switch (sortchoice) {
                         case 1:
                             displayMergeSortedUserData();
-
-                            
-
+                            break;
                         case 2:
                             displayQuickSortedUserData();
+                            break;
+                        case 3:
+                            int userchoice;
 
+                            std::cout << "1. Change Password\n" << std::endl;
+                            std::cout << "2. Delete User\n" << std::endl;
+                            std::cout << "3. Back\n\n" << std::endl;
+                            std::cout << "What would you like to do next?" << std::endl;
+                            std::cin >> userchoice;
+
+                            switch (sortchoice){
+                                case 1:
+                                    void updatePassword();
+                                    break;
+
+                                case 2:
+                                    void deleteUser();
+                                    break;
+                                case 3:
+                                    adminmenu();
+                                    break;
+                                default:
+                                    std::cout << "Invalid input!" << std::endl;
+                                    adminmenu();
+                                    break;
+                            }                    
+
+                        case 4:
+                            adminmenu();
+                            break;
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
-
-                    int userchoice;
-
-                    std::cout << "1. Change password\n" << std::endl;
-                    std::cout << "2. Back\n\n" << std::endl;
-                    std::cout << "What would you like to do next?" << std::endl;
-                    std::cin >> userchoice;
-
-                    switch (sortchoice){
-                        case 1:
-                            void updatePassword();
-                        
-                        case 2:
-                            adminmenu();
-
-                        case 3:
-                            std::cout << "Invalid input!" << std::endl;
-                            adminmenu();
-                    }
-
                     
                 case 2: //view user feedback
                     int sortchoice;
@@ -862,12 +954,14 @@ public:
                     switch(sortchoice){
                         case 1:
                             displayMergeSortedUserFeedback();
-                        
+                            break;
                         case 2: 
                             displayQuickSortedUserFeedback();
+                            break;
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
                     break;
                 case 3: //view customers favorite unis
@@ -881,12 +975,16 @@ public:
                     switch(sortchoice){
                         case 1:
                             displayMergeSortedUserFav();
+                            break;
                         
                         case 2: 
                             displayQuickSortedUserFav();
+                            break;
+
                         default:
                             std::cout << "Invalid input!" << std::endl;
                             adminmenu();
+                            break;
                     }
                     break;
                 case 4:
