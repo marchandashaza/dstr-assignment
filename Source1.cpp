@@ -81,25 +81,6 @@ public:
     }
 };
 
-//add time here
-
-void displayAndAddFeedbackID (){
-    generateid generator;
-    std::string id = generator.generatefeedbackid();
-    
-    std::cout << "Generated ID: " << id << std::endl;
-
-    std::ofstream file("feedback.csv", std::ios::app);
-        if (file.is_open()) {
-            file << id << std::endl;
-            file.close();
-            std::cout << "ID added to the file." << std::endl;
-        } else {
-            std::cout << "Failed to open the file." << std::endl;
-        }
-    
-}
-
 
 class Feedback
 {
@@ -140,6 +121,23 @@ class Feedback
         this->fbreply = "N/A";
         this->fbreply_date = "N/A";
     }
+
+    void displayAndAddFeedbackID (){
+    generateid generator;
+    std::string id = generator.generatefeedbackid();
+    
+    std::cout << "Generated ID: " << id << std::endl;
+
+    std::ofstream file("feedback.csv", std::ios::app);
+        if (file.is_open()) {
+            file << id << std::endl;
+            file.close();
+            std::cout << "ID added to the file." << std::endl;
+        } else {
+            std::cout << "Failed to open the file." << std::endl;
+        }
+    
+}
     
     void insertfb(string username, string institution, string feedback)
     {
