@@ -75,7 +75,6 @@ public:
         while (current != nullptr) 
         {
             current->display();
-
 			current = current->nextAdd;
         }
         std::cout << "List ends" << std::endl;
