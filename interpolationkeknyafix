@@ -5,13 +5,13 @@
 using namespace std;
 
 // Sorting class with a sorting function
-class Sorting {
-public:
-    static void sortArray(int arr[], int size) {
+//class Sorting {
+//public:
+ //   static void sortArray(int arr[], int size) {
         // Your sorting implementation here
         // ...
-    }
-};
+  //  }
+//};
 
 // Function to perform interpolation search
 int interpolationSearch(int arr[], int size, int key) {
@@ -67,7 +67,7 @@ int main() {
     int size = index;
 
     // Call the sorting function from the Sorting class to sort the array
-    Sorting::sortArray(data, size);
+   // Sorting::sortArray(data, size);
 
     int key;
     cout << "Enter the value to search: ";
