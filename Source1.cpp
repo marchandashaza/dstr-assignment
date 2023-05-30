@@ -81,12 +81,22 @@ public:
     }
 };
 
-void displayFeedbackID (){
+//add time here
+
+void displayAndAddFeedbackID (){
     generateid generator;
     std::string id = generator.generatefeedbackid();
     
     std::cout << "Generated ID: " << id << std::endl;
 
+    std::ofstream file("feedback.csv", std::ios::app);
+        if (file.is_open()) {
+            file << id << std::endl;
+            file.close();
+            std::cout << "ID added to the file." << std::endl;
+        } else {
+            std::cout << "Failed to open the file." << std::endl;
+        }
     
 }
 
@@ -133,16 +143,10 @@ class Feedback
     
     void insertfb(string username, string institution, string feedback)
     {
-        void displayFeedbackID();
+        void displayAndAddFeedbackID();
+        
 
-        std::ofstream file("ids.txt", std::ios::app);
-        if (file.is_open()) {
-            file << id << std::endl;
-            file.close();
-            std::cout << "ID added to the file." << std::endl;
-        } else {
-            std::cout << "Failed to open the file." << std::endl;
-        }
+       
     }
 };
 
@@ -719,65 +723,62 @@ struct User {
 };
 
 void updatePassword(const string& filename) {
-    vector<User> users;
-    ifstream file(filename);
-    
-    if (!file) {
+    ifstream inFile(filename);
+    ofstream outFile("temp.txt");
+
+    if (!inFile) {
         cout << "Failed to open file: " << filename << endl;
         return;
     }
-    
-    User user;
+
     string line;
-    
-    // Read and parse the file
-    while (getline(file, line)) {
-        size_t pos = line.find(", ");
-        if (pos != string::npos) {
-            user.name = line.substr(0, pos);
-            user.password = line.substr(pos + 2);
-            users.push_back(user);
-        }
-    }
-    
-    file.close();
-    
-    // Ask for the name of the user to update
+    bool found = false;
     string nameToUpdate;
     cout << "Enter the name of the user to update: ";
     getline(cin, nameToUpdate);
-    
-    // Find the user to update
-    bool found = false;
-    for (User& u : users) {
-        if (u.name == nameToUpdate) {
-            found = true;
-            cout << "Enter the new password for " << u.name << ": ";
-            getline(cin, u.password);
-            break;
+
+    // Read and update the password
+    while (getline(inFile, line)) {
+        size_t pos = line.find(", ");
+        if (pos != string::npos) {
+            string name = line.substr(0, pos);
+            string password = line.substr(pos + 2);
+
+            if (name == nameToUpdate) {
+                found = true;
+                cout << "Enter the new password for " << name << ": ";
+                getline(cin, password);
+            }
+
+            outFile << name << ", " << password << endl;
         }
     }
-    
+
+    inFile.close();
+    outFile.close();
+
     if (!found) {
         cout << "User not found." << endl;
+        remove("temp.txt");  // Remove the temporary file
         return;
     }
-    
-    // Write the updated users to the file
-    ofstream outFile(filename);
-    if (!outFile) {
-        cout << "Failed to open file: " << filename << endl;
+
+    if (remove(filename.c_str()) != 0) {
+        cout << "Failed to remove file: " << filename << endl;
+        remove("temp.txt");  // Remove the temporary file
         return;
     }
-    
-    for (const User& u : users) {
-        outFile << u.name << ", " << u.password << endl;
+
+    if (rename("temp.txt", filename.c_str()) != 0) {
+        cout << "Failed to rename file." << endl;
+        remove("temp.txt");  // Remove the temporary file
+        return;
     }
-    
-    outFile.close();
-    
+
     cout << "File updated successfully." << endl;
+    Admin();
 }
+
 
 void changeUserPassword(){
     const string filename = "userdata.txt";
