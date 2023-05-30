@@ -108,10 +108,72 @@ private:
     }
 
     void static BinarySearch() {
-        int Choice;
-        std::cout << "\n " << std::endl;
+        //int Choice;
+        //std::cout << "\n " << std::endl;
+    
+    
+	    string input;
+	    int opt, type;
+	
+	    cout << " 1. Rank " << endl;
+	    cout << " 2. Institution " << endl;
+        cin >> opt;
+        cin.clear();
+
+        if (opt == 1){
+            type = 1;
+        }
+        else if(opt == 2){
+            type = 2;
+        }
+        else if(opt == 3){
+            type = 3;
+        }
+        else if(opt == 4){
+            type = 4;
+        }
+        else if(opt == 5){
+            type = 5;
+        }
+        else if(opt == 6){
+            type = 6;
+        }
+        else
+        {
+            cout << "ERROR" << endl;
+        }
 
 
+        //check 1
+        cout << "check 1" << endl;
+        cout << type << endl;
+
+        if (type == 1 || type == 5 || type == 6){
+            cout << "Enter what to search: ";
+            cin.clear();
+            cin >> input;
+        }
+        else if(type == 2 || type == 3 || type == 4){
+            cout << "Enter what to search: ";
+            cin.clear();
+            getline(cin, input);
+        }
+
+        //check 2
+        cout << "check 2" << endl;
+        cout << type << endl;
+        cout << input << endl;
+
+
+        University* point = MemberBinarySearch(univDLL.head, input, type)
+
+        if (point != NULL){
+            point->displau();
+        }
+        else{
+            cout << "UNIVERSITY NOT EXIST" << endl;
+
+        }
     }
 
     void static InterpolationSearch() {
