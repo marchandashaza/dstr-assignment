@@ -1,54 +1,27 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-using namespace std;
-
-void merge(string* array, int const left, int const mid, int const right)
+void searchDLLMergeSort(DoubleLinkedList<string>& dll)
 {
-    auto const subArrayOne = mid - left + 1;
-    auto const subArrayTwo = right - mid;
+    // Ask for the value to search
+    string valueToSearch;
+    cout << "Enter the value to search: ";
+    getline(cin, valueToSearch);
 
-    auto* leftArray = new string[subArrayOne];
-    auto* rightArray = new string[subArrayTwo];
+    DoubleLinkedList<string>::Node* current = dll.begin();  // Use fully qualified type
+    bool found = false;
 
-    for (auto i = 0; i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (auto j = 0; j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
-
-    auto indexOfSubArrayOne = 0;
-    auto indexOfSubArrayTwo = 0;
-    int indexOfMergedArray = left;
-
-    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo)
-    {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
-        {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
+    while (current != nullptr) {
+        if (current->data == valueToSearch) {
+            found = true;
+            break;
         }
-        else
-        {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
-        }
-        indexOfMergedArray++;
+        current = dll.next(current);
     }
 
-    while (indexOfSubArrayOne < subArrayOne)
-    {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
+    if (found) {
+        cout << "Value found in the DLL." << endl;
+    } else {
+        cout << "Value not found in the DLL." << endl;
     }
-
-    while (indexOfSubArrayTwo < subArrayTwo)
-    {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
-    }
+}
 
     delete[] leftArray;
     delete[] rightArray;
