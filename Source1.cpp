@@ -572,17 +572,17 @@ void University :: display_univinfo()
 }
 
 void mergeSortFromDLLUserData(){
-    const string filename = "userdata.csv";
-        performDLLMergeSort(filename);
+    std::string filename = "userdata.csv";
+    performDLLMergeSort(filename);
 }
 
 void mergeSortFromDLLUserFeedback(){
-    const string filename = "feedback.csv";
-        performDLLMergeSort(filename);
+    std::string filename = "feedback.csv";
+    performDLLMergeSort(filename);
 }
 void mergeSortFromDLLUserFav(){
-    const string filename = "favorite.csv";
-        performDLLMergeSort(filename);
+    std::string filename = "favorite.csv";
+    performDLLMergeSort(filename);
 }
 
 void populateDLLFromFile(DoubleLinkedList<int>& dll, const std::string& filename) {
@@ -600,6 +600,7 @@ void populateDLLFromFile(DoubleLinkedList<int>& dll, const std::string& filename
         file.close();
     }
 }
+
 
 
 void quickSortFromDLLUserData() {
@@ -786,12 +787,14 @@ void updatePassword(const string& filename) {
     while (getline(file, line)) {
         size_t pos = line.find(", ");
         if (pos != string::npos) {
+            UserNode userNode; // Create a new UserNode object
             userNode.name = line.substr(0, pos);
             userNode.password = line.substr(pos + 2);
             DoubleLinkedList<UserNode>::Node* newNode = new DoubleLinkedList<UserNode>::Node(userNode); // Create a new Node object with UserNode data
-            userNodeDLL.pushBack(newNode);
+            userNodeDLL.InsertEnd(newNode); // Use the InsertEnd function to add the newNode to the userNodeDLL
         }
-    }
+}
+
 
     file.close();
 
@@ -802,14 +805,16 @@ void updatePassword(const string& filename) {
 
     // Find the user to update
     bool found = false;
-    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
+    for (typename DoubleLinkedList<UserNode>::Node* u = userNodeDLL.head; u != nullptr; u = u->next) {
         if (u->data.name == nameToUpdate) {
             found = true;
             cout << "Enter the new password for " << u->data.name << ": ";
             getline(cin, u->data.password);
             break;
         }
-    }
+}
+
+
 
     if (!found) {
         cout << "User not found." << endl;
@@ -823,15 +828,19 @@ void updatePassword(const string& filename) {
         return;
     }
 
-    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
-        outFile << u->data.name << ", " << u->data.password << endl;
+    for (typename DoubleLinkedList<UserNode>::Node* u = userNodeDLL.head; u != nullptr; u = u->next) {
+    outFile << u->data.name << ", " << u->data.password << endl;
     }
+
 
     outFile.close();
 
     // Clean up memory
-    for (DoubleLinkedList<UserNode>::Node* u = userNodeDLL.begin(); u != userNodeDLL.end(); u = userNodeDLL.next(u)) {
+    typename DoubleLinkedList<UserNode>::Node* u = userNodeDLL.head;
+    while (u != nullptr) {
+        typename DoubleLinkedList<UserNode>::Node* nextNode = u->next;
         delete u;
+        u = nextNode;
     }
 
     cout << "File updated successfully." << endl;
@@ -844,27 +853,31 @@ void changeUserPassword() {
 
 
 
-void performDLLMergeSort(const string& filename) {
-    DoubleLinkedList<string> dll;  // Create a DoubleLinkedList object
+void performDLLMergeSort(const std::string& filename) {
+    DoubleLinkedList<std::string> dll;  // Create a DoubleLinkedList object
 
     // Read the contents of the file and insert into the DoubleLinkedList
-    ifstream file(filename);
+    std::ifstream file(filename);
     if (!file) {
-        cout << "Failed to open file: " << filename << endl;
+        std::cout << "Failed to open file: " << filename << std::endl;
         return;
     }
 
-    string line;
-    while (getline(file, line)) {
-        DoubleLinkedList<string>::Node* newNode = new DoubleLinkedList<string>::Node(line);
-        dll.InsertEnd(newNode);
+    std::string line;
+    while (std::getline(file, line)) {
+        dll.InsertEnd(new typename DoubleLinkedList<std::string>::Node(line));
     }
 
     file.close();
 
     // Call the merge sort function
-    searchDLLMergeSort(dll);
+    mergeSort<std::string>(dll);
+
+    // Print the sorted list
+    std::cout << "Sorted list:" << std::endl;
+    dll.Display();
 }
+
 
 
 class RegisteredUser {

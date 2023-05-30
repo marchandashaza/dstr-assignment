@@ -1,121 +1,93 @@
 #include <iostream>
 using namespace std;
 
-template <typename T>
+template <class T>
 class DoubleLinkedList {
 public:
-
-    
-    struct Node {
+    class Node {
+    public:
         T data;
-        University* data;
-        string data;
-        Node* nextAdd;
-        Node* prevAdd;
-
-        Node(const T& value) : data(value), nextAdd(nullptr), prevAdd(nullptr) {}
-        Node(University* value) : data(value), nextAdd(nullptr), prevAdd(nullptr) {}
-        Node(T* value) : data(*value), nextAdd(nullptr), prevAdd(nullptr) {}
+        Node* next;
+        Node* prev;
+        Node(const T& value) : data(value), next(nullptr), prev(nullptr) {}
     };
 
     Node* head;
     Node* tail;
 
-    DoubleLinkedList() {
-        head = nullptr;
-        tail = nullptr;
-        size = 0;
-    }
+    DoubleLinkedList() : head(nullptr), tail(nullptr) {}
 
-    void InsertFront(Node* newNode) {
-        if (head == nullptr) {
-            head = tail = newNode;
-        } else {
-            newNode->nextAdd = head;
-            head->prevAdd = newNode;
-            head = newNode;
-        }
+    void InsertFront(Node* newNode) { 
+		if (head == NULL)
+		{
+			head = tail = newNode;
+		}
+		else
+		{
+			newNode->nextAdd = head;
+			head->prevAdd = newNode;
+			head = newNode;
+		}
 
-        size++;
-    }
+		size++;
+	}
 
-    void InsertEnd(Node* newNode) {
-        if (head == nullptr) {
-            head = tail = newNode;
-        } else {
-            tail->nextAdd = newNode;
-            newNode->prevAdd = tail;
-            tail = newNode;
-        }
+	void InsertEnd(Node* newNode) {
+		if (head == NULL)
+		{
+			head = tail = newNode;
+		}
+		else
+		{
+			tail->nextAdd = newNode;
+			newNode->prevAdd = tail;
+			tail = newNode;
+		}
 
-        size++;
-    }
+		size++;
+	}
 
-    void pushBack(Node* newNode) {
-        if (head == nullptr) {
-            head = tail = newNode;
-        } else {
-            tail->nextAdd = newNode;
-            newNode->prevAdd = tail;
-            tail = newNode;
-        }
-    }
-
-    void remove(const string& value) {
+    void remove(int value) {
         if (head == nullptr) {
             return;
         }
 
         if (head->data == value) {
             Node* temp = head;
-            head = head->nextAdd;
+            head = head->next;
             if (head != nullptr) {
-                head->prevAdd = nullptr;
+                head->prev = nullptr;
             }
             delete temp;
             return;
         }
 
         Node* current = head;
-        while (current->nextAdd != nullptr) {
-            if (current->nextAdd->data == value) {
-                Node* temp = current->nextAdd;
-                current->nextAdd = current->nextAdd->nextAdd;
-                if (current->nextAdd != nullptr) {
-                    current->nextAdd->prevAdd = current;
+        while (current->next != nullptr) {
+            if (current->next->data == value) {
+                Node* temp = current->next;
+                current->next = current->next->next;
+                if (current->next != nullptr) {
+                    current->next->prev = current;
                 }
                 delete temp;
                 return;
             }
-            current = current->nextAdd;
+            current = current->next;
         }
     }
 
     void Display() {
         Node* current = head;
-        while (current != nullptr) {
+        while (current != nullptr) 
+        {
             current->display();
-            current = current->nextAdd;
+			current = current->nextAdd;
         }
-        cout << "List ends" << endl;
-    }
-
-    Node* begin() const {
-        return head;
-    }
-
-    Node* end() const {
-        return nullptr;
-    }
-
-    Node* next(Node* node) const {
-        return node->nextAdd;
-    }
-
-    Node* toNodePtr(Node& node) {
-        return &node;
+        std::cout << "List ends" << std::endl;
     }
 
 private:
     int size;
+
 };
